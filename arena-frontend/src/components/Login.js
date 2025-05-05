@@ -2,7 +2,8 @@ import React from "react";
 
 export default function Login() {
   const login = () => {
-    window.location.href = "http://localhost:5000/auth/slack";
+    // window.location.href = "https://arena-backend-one.vercel.app/auth/slack"; // for prod:
+    window.location.href = "http://localhost:5000/auth/slack"; // for dev
   };
 
   return (
