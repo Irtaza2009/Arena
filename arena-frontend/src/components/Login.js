@@ -7,9 +7,11 @@ export default function Login() {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "5rem" }}>
-      <h2>Welcome to the Arena!</h2>
-      <button onClick={login}>Login with Slack</button>
+    <div className="form-container">
+      <div style={{ textAlign: "center", marginTop: "1rem" }}>
+        <h2>Welcome to the Arena!</h2>
+        <button onClick={login}>Login with Slack</button>
+      </div>
     </div>
   );
 }
