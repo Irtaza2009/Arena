@@ -14,7 +14,9 @@ export default function Voting({ user }) {
 
   useEffect(() => {
     axios
-      .get("/api/submissions", { withCredentials: true })
+      .get("https://arena-backend-one.vercel.app/api/submissions", {
+        withCredentials: true,
+      })
       .then((res) => setSubmissions(res.data));
   }, []);
 
@@ -36,7 +38,7 @@ export default function Voting({ user }) {
 
   const confirmVote = async () => {
     await axios.post(
-      "/api/vote",
+      "https://arena-backend-one.vercel.app/api/vote",
       {
         funWinnerId: selectedVotes.fun?.winnerId,
         funLoserId: selectedVotes.fun?.loserId,

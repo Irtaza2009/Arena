@@ -12,7 +12,9 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("/api/me", { withCredentials: true })
+      .get("https://arena-backend-one.vercel.app/api/me", {
+        withCredentials: true,
+      })
       .then((res) => {
         setUser(res.data);
       })
