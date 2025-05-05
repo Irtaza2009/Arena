@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./Voting.css";
 
 export default function Voting({ user }) {
   const [submissions, setSubmissions] = useState([]);
@@ -9,6 +10,7 @@ export default function Voting({ user }) {
     creativity: null,
     accessibility: null,
   });
+  const [visitedSites, setVisitedSites] = useState({});
 
   useEffect(() => {
     axios
@@ -51,110 +53,79 @@ export default function Voting({ user }) {
     setSelectedVotes({ fun: null, creativity: null, accessibility: null });
   };
 
-  if (pair.length < 2) return <p>Loading matchups...</p>;
-
   const isSelected = (category, id) => selectedVotes[category]?.winnerId === id;
 
+  if (pair.length < 2) return <p className="cottage-text">Loading votes...</p>;
+
+  const allCategoriesVoted =
+    selectedVotes.fun &&
+    selectedVotes.creativity &&
+    selectedVotes.accessibility;
+
+  const handleVisit = (id) => {
+    setVisitedSites((prev) => ({ ...prev, [id]: true }));
+  };
+
+  const bothSitesVisited = pair.every((s) => visitedSites[s._id]);
+
   return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <div
-        style={{
-          display: "flex",
-          gap: "2rem",
-          justifyContent: "center",
-          flexWrap: "wrap",
-        }}
-      >
+    <div className="vote-wrapper">
+      <h2 className="vote-title">Vote for your Favourite Submission</h2>
+
+      <div className="card-pair">
         {pair.map((s) => (
-          <div
-            key={s._id}
-            style={{
-              width: "320px",
-              background: "#fff",
-              borderRadius: "12px",
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-              padding: "1rem",
-              transition: "transform 0.2s",
-            }}
-          >
-            <img
-              src={s.imageUrl}
-              alt="preview"
-              style={{
-                width: "100%",
-                borderRadius: "8px",
-                marginBottom: "0.5rem",
-              }}
-            />
-            <p style={{ fontWeight: "bold", fontSize: "1.1rem" }}>
-              {s.user.name}
-            </p>
+          <div key={s._id} className="vote-card">
+            <img src={s.imageUrl} alt="preview" className="vote-image" />
+            <p className="vote-user">{s.user.name}</p>
             <p>
               <a
                 href={s.siteUrl}
                 target="_blank"
                 rel="noreferrer"
-                style={{
-                  color: "#2196F3",
-                  textDecoration: "none",
-                  fontWeight: "bold",
-                }}
+                className="vote-link"
+                onClick={() => handleVisit(s._id)}
               >
-                🔗 Visit Site
+                Visit Site
               </a>
             </p>
 
-            <p style={{ margin: "0.5rem 0", fontWeight: "600" }}>Vote for:</p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+            <div className="vote-categories">
+              <p>Pick for:</p>
               {["creativity", "fun", "accessibility"].map((category) => (
                 <button
                   key={category}
                   onClick={() => handleSelect(category, s._id)}
-                  style={{
-                    flex: "1 1 45%",
-                    padding: "0.5rem 0.75rem",
-                    borderRadius: "6px",
-                    border: "none",
-                    cursor: "pointer",
-                    backgroundColor: isSelected(category, s._id)
-                      ? "#4CAF50"
-                      : "#f0f0f0",
-                    color: isSelected(category, s._id) ? "white" : "#333",
-                    fontWeight: "500",
-                    transition: "all 0.2s ease-in-out",
-                    boxShadow: isSelected(category, s._id)
-                      ? "0 2px 6px rgba(76, 175, 80, 0.3)"
-                      : "none",
-                  }}
-                >
-                  {`More ${
-                    category.charAt(0).toUpperCase() + category.slice(1)
+                  disabled={!bothSitesVisited}
+                  className={`vote-button ${
+                    isSelected(category, s._id) ? "selected" : ""
                   }`}
+                >
+                  {` ${category.charAt(0).toUpperCase() + category.slice(1)}`}
                 </button>
               ))}
             </div>
+            {!bothSitesVisited && (
+              <p className="visit-warning">
+                ⚠️ You must visit both sites before voting.
+              </p>
+            )}
           </div>
         ))}
       </div>
 
-      <div style={{ textAlign: "center", marginTop: "2rem" }}>
+      <div style={{ textAlign: "center" }}>
         <button
           onClick={confirmVote}
-          style={{
-            padding: "1rem 2rem",
-            fontSize: "1.1rem",
-            backgroundColor: "#2196F3",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer",
-            fontWeight: "bold",
-            boxShadow: "0 4px 10px rgba(33, 150, 243, 0.3)",
-            transition: "background 0.2s",
-          }}
+          className="confirm-vote-btn"
+          disabled={!allCategoriesVoted}
         >
-          ✅ Confirm Vote
+          Confirm Vote
         </button>
+        {!allCategoriesVoted && (
+          <p className="vote-warning">
+            Please vote in all categories before confirming.
+          </p>
+        )}
       </div>
     </div>
   );

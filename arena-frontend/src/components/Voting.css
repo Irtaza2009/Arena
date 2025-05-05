@@ -1,0 +1,173 @@
+.vote-wrapper {
+  padding: 0rem;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.vote-title {
+  text-align: center;
+  font-size: 2rem;
+  color: #3e2f25;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  animation: softFade 1s ease-in-out;
+}
+
+.card-pair {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.vote-card {
+  width: 260px;
+  background-color: #f4f1eb;
+  padding: 1rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border: 2px solid #c1b6a6;
+  transition: transform 0.3s ease;
+  animation: fadeIn 1s ease;
+}
+
+.vote-card:hover {
+  transform: scale(1.02);
+}
+
+.vote-image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+}
+
+.vote-user {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #3e2f25;
+  margin-top: 0.5rem;
+}
+
+.vote-link {
+  color: #fff;
+  background-color: #6a4e2f;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-weight: bold;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.vote-link:hover {
+  background-color: #a7332e;
+}
+
+.vote-categories {
+  margin-top: 1rem;
+}
+
+.vote-categories p {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.vote-button {
+  margin: 0.25rem;
+  background-color: #dcd5c4;
+  color: #2e241c;
+  border: 2px solid transparent;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-family: "Patrick Hand", cursive;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vote-button.selected {
+  background-color: #b2c2a8;
+  border-color: #2e241c;
+}
+
+.vote-button:disabled {
+  background-color: #ccc;
+  color: #666;
+  border-color: #aaa;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.confirm-vote-btn {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  background-color: #d8e0d3;
+  color: #3a2f24;
+  border-radius: 16px;
+  border: 2px solid #a8b5a0;
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.08);
+  font-family: "Patrick Hand", cursive;
+  margin-top: 2rem;
+}
+
+.confirm-vote-btn:disabled {
+  background-color: #3a3a4a;
+  color: #aaa;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.vote-warning {
+  color: #c4453e;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  animation: softFade 0.4s ease-in-out;
+  margin-bottom: 1rem;
+}
+
+.visit-warning {
+  color: #c4453e;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  animation: softFade 0.3s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .vote-wrapper {
+    height: auto;
+    overflow: auto;
+    padding: 1rem;
+  }
+
+  .card-pair {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes softFade {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

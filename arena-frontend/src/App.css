@@ -3,9 +3,9 @@
 body {
   margin: 0;
   padding: 0;
-  background: #fffaf4;
+  background: #f3efe7; /* soft cream background */
   font-family: "Patrick Hand", cursive;
-  color: #4b3c2f;
+  color: #3b2e24; /* deep earthy brown for text */
   transition: background 0.3s ease;
 }
 
@@ -21,23 +21,23 @@ body {
 
 .cottage-text {
   font-size: 1.5rem;
-  color: #5b4232;
+  color: #3b2e24; /* earthy brown */
   animation: softFade 1.2s ease-in-out;
   text-align: center;
 }
 
 .error {
-  color: #c4453e;
+  color: #c4453e; /* muted red for errors */
 }
 
 button {
-  background-color: #ffe0e9;
+  background-color: #dfe8d5; /* soft moss green */
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 12px;
   font-family: "Patrick Hand", cursive;
   font-size: 1.2rem;
-  color: #4e342e;
+  color: #3e342c; /* rich earthy brown */
   cursor: pointer;
   transition: transform 0.2s ease, background-color 0.3s ease;
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
@@ -45,29 +45,29 @@ button {
 
 button:hover {
   transform: scale(1.05);
-  background-color: #ffd8e0;
+  background-color: #e4d1b3; /* pale yellow-green */
 }
 
 input {
   width: 100%;
   padding: 0.6rem;
-  border: 2px solid #e3c5b8;
+  border: 2px solid #c5bfa5; /* subtle beige border */
   border-radius: 10px;
   font-family: "Patrick Hand", cursive;
   font-size: 1rem;
-  background: #fff8f2;
+  background: #f3efe7; /* soft cream */
   transition: border 0.2s ease;
 }
 
 input:focus {
   outline: none;
-  border-color: #c89f94;
+  border-color: #c89f94; /* earthy moss green */
 }
 
 label {
   font-size: 1rem;
   font-weight: bold;
-  color: #5b4232;
+  color: #3b2e24; /* earthy brown */
   margin-bottom: 0.25rem;
   display: inline-block;
 }
@@ -75,7 +75,7 @@ label {
 h2,
 h4 {
   text-align: center;
-  color: #4b3c2f;
+  color: #3b2e24; /* earthy brown */
   margin-bottom: 1rem;
 }
 
@@ -83,7 +83,7 @@ h4 {
   padding: 2rem;
   max-width: 500px;
   margin: 0 auto;
-  background-color: #fff7f2;
+  background-color: #fff7f2; /* light cream background */
   border-radius: 16px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   animation: fadeIn 1s ease;
