@@ -9,7 +9,7 @@ router.get("/slack", (req, res) => {
   const redirectUrl = `https://slack.com/oauth/v2/authorize?client_id=${
     process.env.SLACK_CLIENT_ID
   }&user_scope=${encodeURIComponent(
-    "identity.basic,identity.email,identity.avatar"
+    "identity.basic,identity.avatar"
   )}&redirect_uri=${process.env.SLACK_REDIRECT_URI}`;
   res.redirect(redirectUrl);
 });
@@ -72,7 +72,7 @@ router.get("/slack/callback", async (req, res) => {
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
 
-    res.redirect("http://localhost:3000/"); // redirect to frontend
+    res.redirect("https://arena.irtaza.xyz/"); // redirect to frontend
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Slack authentication failed");

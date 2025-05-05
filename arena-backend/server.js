@@ -17,7 +17,7 @@ const app = express();
 // CORS config
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["https://arena.irtaza.xyz", "http://localhost:3000"],
     credentials: true,
   })
 );
@@ -34,7 +34,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: false, // Set to true in production with HTTPS
+      secure: true, // Set to true in production with HTTPS
       sameSite: "none",
     },
   })
