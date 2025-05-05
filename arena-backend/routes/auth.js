@@ -68,11 +68,11 @@ router.get("/slack/callback", async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
 
-    res.redirect("http://localhost:3000"); // redirect to frontend
+    res.redirect("http://localhost:3000/"); // redirect to frontend
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Slack authentication failed");
