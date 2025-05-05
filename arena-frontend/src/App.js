@@ -3,6 +3,7 @@ import axios from "axios";
 import Login from "./components/Login";
 import SubmissionForm from "./components/SubmissionForm";
 import Voting from "./components/Voting";
+import "./App.css";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -17,7 +18,6 @@ function App() {
       })
       .catch((err) => {
         if (err.response && err.response.status === 401) {
-          // Not logged in, no need to set an error
           setUser(null);
         } else {
           console.error("Error fetching user:", err);
@@ -29,12 +29,21 @@ function App() {
       });
   }, []);
 
-  if (checking) return <p>Loading...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
-  if (!user) return <Login />;
-  if (!user.hasSubmitted) return <SubmissionForm />;
-
-  return <Voting user={user} />;
+  return (
+    <div className="App">
+      {checking ? (
+        <p className="cottage-text">Loading...</p>
+      ) : error ? (
+        <p className="cottage-text error">{error}</p>
+      ) : !user ? (
+        <Login />
+      ) : !user.hasSubmitted ? (
+        <SubmissionForm />
+      ) : (
+        <Voting user={user} />
+      )}
+    </div>
+  );
 }
 
 export default App;

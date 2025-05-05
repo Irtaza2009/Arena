@@ -1,38 +1,70 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&family=Patrick+Hand&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #fffaf4;
+  font-family: "Patrick Hand", cursive;
+  color: #4b3c2f;
+  transition: background 0.3s ease;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background-image: url("https://www.transparenttextures.com/patterns/fabric-of-squares.png");
+  animation: fadeIn 1.5s ease;
 }
 
-.App-link {
-  color: #61dafb;
+.cottage-text {
+  font-size: 1.5rem;
+  color: #5b4232;
+  animation: softFade 1.2s ease-in-out;
 }
 
-@keyframes App-logo-spin {
+.error {
+  color: #c4453e;
+}
+
+button {
+  background-color: #ffe0e9;
+  border: none;
+  padding: 0.8rem 1.6rem;
+  border-radius: 12px;
+  font-family: "Dancing Script", cursive;
+  font-size: 1.2rem;
+  color: #4e342e;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  transform: scale(1.05);
+  background-color: #ffcad4;
+}
+
+@keyframes fadeIn {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(15px);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes softFade {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 }
