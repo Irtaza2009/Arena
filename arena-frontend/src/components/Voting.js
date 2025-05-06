@@ -17,13 +17,13 @@ export default function Voting({ user }) {
 
   useEffect(() => {
     axios
-      .get("https://arena-backend-one.vercel.app/api/submissions", {
+      .get("https://arena-backend.irtaza.xyz/api/submissions", {
         withCredentials: true,
       })
       .then((res) => setSubmissions(res.data));
 
     axios
-      .get("https://arena-backend-one.vercel.app/api/user-votes", {
+      .get("https://arena-backend.irtaza.xyz/api/user-votes", {
         withCredentials: true,
       })
       .then((res) => setVoteCount(res.data.count))
@@ -51,7 +51,7 @@ export default function Voting({ user }) {
     setVoteStatus("loading");
     try {
       await axios.post(
-        "https://arena-backend-one.vercel.app/api/vote",
+        "https://arena-backend.irtaza.xyz/api/vote",
         {
           funWinnerId: selectedVotes.fun?.winnerId,
           funLoserId: selectedVotes.fun?.loserId,

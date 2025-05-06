@@ -52,7 +52,7 @@ export default function SubmissionForm() {
       const sanitizedSiteUrl = sanitizeUrl(siteUrl);
 
       await axios.post(
-        "https://arena-backend-one.vercel.app/api/submit",
+        "https://arena-backend.irtaza.xyz/api/submit",
         { siteUrl: sanitizedSiteUrl, imageUrl },
         { withCredentials: true }
       );

@@ -15,7 +15,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("https://arena-backend-one.vercel.app/api/me", {
+      .get("https://arena-backend.irtaza.xyz/api/me", {
         withCredentials: true,
       })
       .then((res) => {

@@ -13,7 +13,7 @@ const Leaderboard = ({ onClose }) => {
       try {
         const adminSecret = localStorage.getItem("adminSecret");
         const response = await axios.get(
-          "https://arena-backend-one.vercel.app/admin/leaderboard",
+          "https://arena-backend.irtaza.xyz/admin/leaderboard",
           {
             headers: {
               "x-admin-secret": adminSecret,
