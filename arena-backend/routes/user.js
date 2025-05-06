@@ -24,6 +24,7 @@ router.post("/submit", auth, async (req, res) => {
     user: req.user._id,
     siteUrl,
     imageUrl,
+    sourceUrl,
   });
 
   req.user.hasSubmitted = true;
