@@ -12,6 +12,7 @@ router.get("/me", auth, async (req, res) => {
 });
 
 const Submission = require("../models/Submission");
+const Vote = require("../models/Vote");
 
 router.post("/submit", auth, async (req, res) => {
   const { siteUrl, imageUrl } = req.body;
@@ -51,24 +52,37 @@ router.post("/vote", auth, async (req, res) => {
     creativityLoserId,
     accessibilityWinnerId,
     accessibilityLoserId,
+    startTime,
   } = req.body;
+
+  const endTime = Date.now();
+  const timeTaken = endTime - startTime;
 
   const { calculateElo } = require("../utils/elo");
   const categories = [
-    { winnerId: funWinnerId, loserId: funLoserId, key: "eloFun" },
+    {
+      winnerId: funWinnerId,
+      loserId: funLoserId,
+      key: "eloFun",
+      name: "fun",
+    },
     {
       winnerId: creativityWinnerId,
       loserId: creativityLoserId,
       key: "eloCreativity",
+      name: "creativity",
     },
     {
       winnerId: accessibilityWinnerId,
       loserId: accessibilityLoserId,
       key: "eloAccessibility",
+      name: "accessibility",
     },
   ];
 
-  for (const { winnerId, loserId, key } of categories) {
+  const voteRecords = [];
+
+  for (const { winnerId, loserId, key, name } of categories) {
     if (!winnerId || !loserId) continue;
 
     const winner = await Submission.findById(winnerId);
@@ -81,7 +95,24 @@ router.post("/vote", auth, async (req, res) => {
 
     await winner.save();
     await loser.save();
+
+    voteRecords.push({
+      category: name,
+      winner: winner._id,
+      loser: loser._id,
+    });
   }
+
+  // Save vote record
+  await Vote.create({
+    user: req.user._id,
+    votes: voteRecords,
+    timeTaken,
+  });
+
+  // Increment vote count
+  req.user.votes = (req.user.votes || 0) + 1;
+  await req.user.save();
 
   res.send("Vote recorded for all categories.");
 });

@@ -11,6 +11,7 @@ export default function Voting({ user }) {
     accessibility: null,
   });
   const [visitedSites, setVisitedSites] = useState({});
+  const [startTime, setStartTime] = useState(Date.now());
 
   useEffect(() => {
     axios
@@ -25,6 +26,7 @@ export default function Voting({ user }) {
       const shuffled = [...submissions].sort(() => 0.5 - Math.random());
       setPair([shuffled[0], shuffled[1]]);
       setSelectedVotes({ fun: null, creativity: null, accessibility: null });
+      setStartTime(Date.now());
     }
   }, [submissions]);
 
@@ -46,6 +48,7 @@ export default function Voting({ user }) {
         creativityLoserId: selectedVotes.creativity?.loserId,
         accessibilityWinnerId: selectedVotes.accessibility?.winnerId,
         accessibilityLoserId: selectedVotes.accessibility?.loserId,
+        startTime,
       },
       { withCredentials: true }
     );
