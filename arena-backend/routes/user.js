@@ -15,7 +15,7 @@ const Submission = require("../models/Submission");
 const Vote = require("../models/Vote");
 
 router.post("/submit", auth, async (req, res) => {
-  const { siteUrl, imageUrl } = req.body;
+  const { siteUrl, imageUrl, sourceUrl } = req.body;
 
   const already = await Submission.findOne({ user: req.user._id });
   if (already) return res.status(400).json({ message: "Already submitted!" });
