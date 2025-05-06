@@ -94,7 +94,11 @@ router.post("/vote", auth, async (req, res) => {
     const loser = await Submission.findById(loserId);
     if (!winner || !loser) continue;
 
-    const [newWinnerElo, newLoserElo] = calculateElo(winner[key], loser[key]);
+    const oldWinnerElo = winner[key];
+    const oldLoserElo = loser[key];
+
+    const [newWinnerElo, newLoserElo] = calculateElo(oldWinnerElo, oldLoserElo);
+
     winner[key] = newWinnerElo;
     loser[key] = newLoserElo;
 
@@ -105,6 +109,10 @@ router.post("/vote", auth, async (req, res) => {
       category: name,
       winner: winner._id,
       loser: loser._id,
+      eloChange: {
+        winner: newWinnerElo - oldWinnerElo,
+        loser: newLoserElo - oldLoserElo,
+      },
     });
   }
 

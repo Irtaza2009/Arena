@@ -7,6 +7,10 @@ const voteSchema = new mongoose.Schema({
       category: String,
       winner: { type: mongoose.Schema.Types.ObjectId, ref: "Submission" },
       loser: { type: mongoose.Schema.Types.ObjectId, ref: "Submission" },
+      eloChange: {
+        winner: Number,
+        loser: Number,
+      },
     },
   ],
   timeTaken: Number, // in milliseconds
