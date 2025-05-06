@@ -51,7 +51,18 @@
   font-weight: bold;
   font-size: 1.2rem;
   color: #3e2f25;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-top: 0.5rem;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
 }
 
 .vote-link {

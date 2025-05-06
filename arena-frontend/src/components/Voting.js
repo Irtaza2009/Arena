@@ -99,7 +99,14 @@ export default function Voting({ user }) {
         {pair.map((s) => (
           <div key={s._id} className="vote-card">
             <img src={s.imageUrl} alt="preview" className="vote-image" />
-            <p className="vote-user">{s.user.name}</p>
+            <div className="vote-user">
+              <img
+                src={s.user.avatar}
+                alt={`${s.user.name}'s avatar`}
+                className="user-avatar"
+              />
+              <span>{s.user.name}</span>
+            </div>
             <p>
               <a
                 href={s.siteUrl}
