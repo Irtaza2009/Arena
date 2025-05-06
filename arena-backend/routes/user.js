@@ -44,7 +44,7 @@ router.get("/submissions", auth, async (req, res) => {
   res.json(submissions);
 });
 
-router.get("/user-votes", authenticateUser, async (req, res) => {
+router.get("/user-votes", auth, async (req, res) => {
   const userId = req.user.id;
   const count = await Vote.countDocuments({ userId });
   res.json({ count });
