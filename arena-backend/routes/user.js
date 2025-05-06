@@ -45,9 +45,7 @@ router.get("/submissions", auth, async (req, res) => {
 });
 
 router.get("/user-votes", auth, async (req, res) => {
-  const userId = req.user.id;
-  const count = await Vote.countDocuments({ userId });
-  res.json({ count });
+  res.json({ count: req.user.votes || 0 });
 });
 
 router.post("/vote", auth, async (req, res) => {
