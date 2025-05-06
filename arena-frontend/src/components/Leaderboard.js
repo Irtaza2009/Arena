@@ -10,6 +10,7 @@ const Leaderboard = ({ onClose }) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      setError(null);
       try {
         const adminSecret = localStorage.getItem("adminSecret");
         const response = await axios.get(
@@ -18,12 +19,26 @@ const Leaderboard = ({ onClose }) => {
             headers: {
               "x-admin-secret": adminSecret,
             },
+            withCredentials: true,
           }
         );
-        setLeaderboardData(response.data);
+
+        // Transform data to match expected format
+        const transformedData = {
+          submissionCount: response.data.submissionCount,
+          topVoters: response.data.topVoters,
+          leaderboardAverage: response.data.leaderboards.average,
+          leaderboardFun: response.data.leaderboards.fun,
+          leaderboardCreativity: response.data.leaderboards.creativity,
+          leaderboardAccessibility: response.data.leaderboards.accessibility,
+        };
+
+        setLeaderboardData(transformedData);
       } catch (err) {
-        setError("Failed to fetch leaderboard data");
-        console.error(err);
+        console.error("Leaderboard fetch error:", err);
+        setError(
+          err.response?.data?.message || "Failed to fetch leaderboard data"
+        );
       } finally {
         setLoading(false);
       }
@@ -33,7 +48,8 @@ const Leaderboard = ({ onClose }) => {
   }, [activeTab]);
 
   const renderLeaderboard = () => {
-    if (!leaderboardData) return null;
+    if (!leaderboardData)
+      return <p className="cottage-text">No data available</p>;
 
     let data;
     switch (activeTab) {
@@ -50,9 +66,14 @@ const Leaderboard = ({ onClose }) => {
         return (
           <div className="leaderboard-list">
             {leaderboardData.topVoters.map((voter, index) => (
-              <div key={index} className="leaderboard-item">
+              <div key={`voter-${index}`} className="leaderboard-item">
                 <span className="rank">{index + 1}</span>
-                <img src={voter.avatar} alt={voter.name} className="avatar" />
+                <img
+                  src={voter.avatar}
+                  alt={voter.name}
+                  className="avatar"
+                  onError={(e) => (e.target.src = "/default-avatar.png")}
+                />
                 <span className="name">{voter.name}</span>
                 <span className="score">{voter.votes} votes</span>
               </div>
@@ -63,17 +84,22 @@ const Leaderboard = ({ onClose }) => {
         data = leaderboardData.leaderboardAverage;
     }
 
+    if (!data || data.length === 0) {
+      return <p className="cottage-text">No entries yet</p>;
+    }
+
     return (
       <div className="leaderboard-list">
         {data.map((item, index) => (
-          <div key={index} className="leaderboard-item">
+          <div key={`${activeTab}-${index}`} className="leaderboard-item">
             <span className="rank">{index + 1}</span>
             <img
-              src={item.user.avatar}
-              alt={item.user.name}
+              src={item.user?.avatar || "/default-avatar.png"}
+              alt={item.user?.name || "Anonymous"}
               className="avatar"
+              onError={(e) => (e.target.src = "/default-avatar.png")}
             />
-            <span className="name">{item.user.name}</span>
+            <span className="name">{item.user?.name || "Anonymous"}</span>
             <span className="score">
               {activeTab === "average"
                 ? Math.round(item.eloAverage)
@@ -94,49 +120,43 @@ const Leaderboard = ({ onClose }) => {
   return (
     <div className="leaderboard-modal">
       <div className="leaderboard-content">
-        <button className="close-button" onClick={onClose}>
+        <button
+          className="close-button"
+          onClick={onClose}
+          aria-label="Close leaderboard"
+        >
           ×
         </button>
         <h2>Leaderboard</h2>
+
         <div className="tabs">
-          <button
-            className={activeTab === "average" ? "active" : ""}
-            onClick={() => setActiveTab("average")}
-          >
-            Average
-          </button>
-          <button
-            className={activeTab === "fun" ? "active" : ""}
-            onClick={() => setActiveTab("fun")}
-          >
-            Fun
-          </button>
-          <button
-            className={activeTab === "creativity" ? "active" : ""}
-            onClick={() => setActiveTab("creativity")}
-          >
-            Creativity
-          </button>
-          <button
-            className={activeTab === "accessibility" ? "active" : ""}
-            onClick={() => setActiveTab("accessibility")}
-          >
-            Accessibility
-          </button>
-          <button
-            className={activeTab === "voters" ? "active" : ""}
-            onClick={() => setActiveTab("voters")}
-          >
-            Top Voters
-          </button>
+          {["average", "fun", "creativity", "accessibility", "voters"].map(
+            (tab) => (
+              <button
+                key={tab}
+                className={activeTab === tab ? "active" : ""}
+                onClick={() => setActiveTab(tab)}
+                disabled={loading}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </button>
+            )
+          )}
         </div>
+
         {loading ? (
-          <p className="cottage-text">Loading...</p>
+          <div className="loading-state">
+            <p className="cottage-text">Loading...</p>
+          </div>
         ) : error ? (
-          <p className="cottage-text error">{error}</p>
+          <div className="error-state">
+            <p className="cottage-text error">{error}</p>
+            <button onClick={() => window.location.reload()}>Retry</button>
+          </div>
         ) : (
           renderLeaderboard()
         )}
+
         <div className="stats">
           <p>Total Submissions: {leaderboardData?.submissionCount || 0}</p>
         </div>
@@ -148,14 +168,41 @@ const Leaderboard = ({ onClose }) => {
 const AdminGate = ({ onSuccess }) => {
   const [secret, setSecret] = useState("");
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (secret === process.env.REACT_APP_ADMIN_SECRET) {
-      localStorage.setItem("adminSecret", secret);
-      onSuccess();
-    } else {
-      setError("Incorrect secret");
+    setSubmitting(true);
+    setError("");
+
+    try {
+      // Verify the secret by making a test request
+      const isValid = await verifyAdminSecret(secret);
+      if (isValid) {
+        localStorage.setItem("adminSecret", secret);
+        onSuccess();
+      } else {
+        setError("Incorrect secret");
+      }
+    } catch (err) {
+      setError("Verification failed");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const verifyAdminSecret = async (secret) => {
+    try {
+      const response = await axios.get(
+        "https://arena-backend.irtaza.xyz/admin/leaderboard",
+        {
+          headers: { "x-admin-secret": secret },
+          validateStatus: () => true, // Don't throw on 403
+        }
+      );
+      return response.status === 200;
+    } catch (err) {
+      return false;
     }
   };
 
@@ -169,9 +216,13 @@ const AdminGate = ({ onSuccess }) => {
           value={secret}
           onChange={(e) => setSecret(e.target.value)}
           placeholder="Secret key..."
+          autoComplete="off"
+          required
         />
         {error && <p className="error">{error}</p>}
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={submitting}>
+          {submitting ? "Verifying..." : "Submit"}
+        </button>
       </form>
     </div>
   );
@@ -180,9 +231,29 @@ const AdminGate = ({ onSuccess }) => {
 export const LeaderboardManager = () => {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showAdminGate, setShowAdminGate] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    localStorage.getItem("adminSecret") === process.env.REACT_APP_ADMIN_SECRET
-  );
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // Verify the stored secret on mount
+    const verifyStoredSecret = async () => {
+      const storedSecret = localStorage.getItem("adminSecret");
+      if (storedSecret) {
+        try {
+          const isValid = await axios.get(
+            "https://arena-backend.irtaza.xyz/admin/leaderboard",
+            {
+              headers: { "x-admin-secret": storedSecret },
+              validateStatus: () => true,
+            }
+          );
+          setIsAuthenticated(isValid.status === 200);
+        } catch {
+          setIsAuthenticated(false);
+        }
+      }
+    };
+    verifyStoredSecret();
+  }, []);
 
   const handleHeartClick = () => {
     if (isAuthenticated) {
@@ -202,7 +273,12 @@ export const LeaderboardManager = () => {
     <>
       <footer className="footer">
         Made with{" "}
-        <span className="heart" onClick={handleHeartClick}>
+        <span
+          className="heart"
+          onClick={handleHeartClick}
+          role="button"
+          tabIndex={0}
+        >
           ❤️
         </span>{" "}
         by Irtaza —{" "}
