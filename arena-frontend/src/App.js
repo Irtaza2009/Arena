@@ -44,6 +44,16 @@ function App() {
       ) : (
         <Voting user={user} />
       )}
+      <footer className="footer">
+        Made with ❤️ by Irtaza —{" "}
+        <a
+          href="https://github.com/Irtaza2009"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub
+        </a>
+      </footer>
     </div>
   );
 }

@@ -33,7 +33,9 @@ export default function SubmissionForm() {
     }
 
     if (!isValidUrl(siteUrl)) {
-      setMessage("Invalid site URL. Please provide a valid URL.");
+      setMessage(
+        "Invalid site URL. Please provide a valid URL. (URL should start with http:// or https://)"
+      );
       return;
     }
 
@@ -49,7 +51,7 @@ export default function SubmissionForm() {
       const sanitizedSiteUrl = sanitizeUrl(siteUrl);
 
       await axios.post(
-        "/api/submit",
+        "https://arena-backend-one.vercel.app/api/submit",
         { siteUrl: sanitizedSiteUrl, imageUrl },
         { withCredentials: true }
       );
@@ -110,7 +112,7 @@ export default function SubmissionForm() {
         </label>
         <input
           id="imageUrl"
-          placeholder="Image URL (starting with http:// or https://)"
+          placeholder="Image URL (you can use #cdn)"
           value={imageUrl}
           onChange={handleImageChange}
           style={{
