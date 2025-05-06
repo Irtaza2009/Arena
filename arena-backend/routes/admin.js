@@ -11,10 +11,29 @@ router.get("/leaderboard", async (req, res) => {
     return res.status(403).json({ message: "Unauthorized" });
   }
 
-  const topSubmissions = await Submission.find()
-    .populate("user", "name avatar")
-    .sort({ eloFun: -1 }) // You can add a query param for other categories
-    .limit(20);
+  const allSubmissions = await Submission.find().populate(
+    "user",
+    "name avatar"
+  );
+
+  // Compute average elo and sort each leaderboard
+  const withAverage = allSubmissions.map((s) => ({
+    ...s.toObject(),
+    eloAverage: (s.eloFun + s.eloCreativity + s.eloAccessibility) / 3,
+  }));
+
+  const leaderboardAverage = [...withAverage]
+    .sort((a, b) => b.eloAverage - a.eloAverage)
+    .slice(0, 20);
+  const leaderboardFun = [...withAverage]
+    .sort((a, b) => b.eloFun - a.eloFun)
+    .slice(0, 20);
+  const leaderboardCreativity = [...withAverage]
+    .sort((a, b) => b.eloCreativity - a.eloCreativity)
+    .slice(0, 20);
+  const leaderboardAccessibility = [...withAverage]
+    .sort((a, b) => b.eloAccessibility - a.eloAccessibility)
+    .slice(0, 20);
 
   const topVoters = await User.find({ votes: { $gt: 0 } })
     .select("name avatar votes")
@@ -25,8 +44,11 @@ router.get("/leaderboard", async (req, res) => {
 
   res.json({
     submissionCount,
-    topSubmissions,
     topVoters,
+    leaderboardAverage,
+    leaderboardFun,
+    leaderboardCreativity,
+    leaderboardAccessibility,
   });
 });
 
