@@ -3,6 +3,8 @@ import axios from "axios";
 import Login from "./components/Login";
 import SubmissionForm from "./components/SubmissionForm";
 import Voting from "./components/Voting";
+import Submitted from "./components/Submitted";
+
 import "./App.css";
 
 function App() {
@@ -42,7 +44,7 @@ function App() {
       ) : !user.hasSubmitted ? (
         <SubmissionForm />
       ) : (
-        <Voting user={user} />
+        <Submitted /> //voting locked
       )}
       <footer className="footer">
         Made with ❤️ by Irtaza —{" "}
