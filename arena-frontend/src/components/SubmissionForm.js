@@ -14,6 +14,7 @@ const isValidUrl = (url) => {
 export default function SubmissionForm() {
   const [siteUrl, setSiteUrl] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [sourceUrl, setSourceUrl] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
@@ -90,9 +91,31 @@ export default function SubmissionForm() {
         </label>
         <input
           id="siteUrl"
-          placeholder="Site URL (starting with http:// or https://)"
+          placeholder="(starting with https:// or http://)"
           value={siteUrl}
           onChange={(e) => setSiteUrl(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "0.5rem",
+            marginBottom: "1rem",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+          }}
+        />
+      </div>
+
+      <div style={{ marginBottom: "1rem" }}>
+        <label
+          htmlFor="sourceUrl"
+          style={{ display: "block", fontWeight: "bold" }}
+        >
+          Source Code URL (Optional)
+        </label>
+        <input
+          id="sourceUrl"
+          placeholder="e.g GitHub Repo link"
+          value={sourceUrl}
+          onChange={(e) => setSourceUrl(e.target.value)}
           style={{
             width: "100%",
             padding: "0.5rem",
@@ -112,7 +135,7 @@ export default function SubmissionForm() {
         </label>
         <input
           id="imageUrl"
-          placeholder="Image URL (you can use #cdn)"
+          placeholder="(you can use #cdn)"
           value={imageUrl}
           onChange={handleImageChange}
           style={{

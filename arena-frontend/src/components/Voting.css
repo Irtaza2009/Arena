@@ -79,6 +79,21 @@
   background-color: #a7332e;
 }
 
+.source-link {
+  background-color: #dfe8d5;
+  color: #594335;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-weight: bold;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+  margin-left: 0.5rem;
+}
+
+.source-link:hover {
+  background-color: #a8b5a0;
+}
+
 .vote-categories {
   margin-top: 1rem;
 }

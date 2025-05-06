@@ -119,6 +119,16 @@ export default function Voting({ user }) {
               >
                 Visit Site
               </a>
+              {s.sourceUrl && (
+                <a
+                  href={s.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="source-link"
+                >
+                  View Source
+                </a>
+              )}
             </p>
 
             <div className="vote-categories">
