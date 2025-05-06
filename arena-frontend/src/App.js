@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import SubmissionForm from "./components/SubmissionForm";
 import Voting from "./components/Voting";
 import Submitted from "./components/Submitted";
+import { LeaderboardManager } from "./components/Leaderboard";
 
 import "./App.css";
 
@@ -46,16 +47,7 @@ function App() {
       ) : (
         <Submitted /> //voting locked
       )}
-      <footer className="footer">
-        Made with ❤️ by Irtaza —{" "}
-        <a
-          href="https://github.com/Irtaza2009"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          GitHub
-        </a>
-      </footer>
+      <LeaderboardManager />
     </div>
   );
 }

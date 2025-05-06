@@ -134,3 +134,139 @@ h4 {
 .footer a:hover {
   text-decoration: underline;
 }
+
+/* Leaderboard styles */
+.heart {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.heart:hover {
+  transform: scale(1.2);
+}
+
+.leaderboard-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.leaderboard-content {
+  background-color: #fff7f2;
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #3b2e24;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.tabs button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+.tabs button.active {
+  background-color: #c89f94;
+  color: white;
+}
+
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.leaderboard-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: #f3efe7;
+  border-radius: 8px;
+  gap: 1rem;
+}
+
+.rank {
+  font-weight: bold;
+  width: 2rem;
+  text-align: center;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.name {
+  flex-grow: 1;
+}
+
+.score {
+  font-weight: bold;
+  color: #c4453e;
+}
+
+.stats {
+  margin-top: 1rem;
+  text-align: center;
+  font-style: italic;
+}
+
+.admin-gate {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.admin-gate form {
+  background-color: #fff7f2;
+  padding: 2rem;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 300px;
+}
+
+.admin-gate label {
+  text-align: center;
+  font-size: 1.2rem;
+}
