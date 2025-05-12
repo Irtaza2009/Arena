@@ -84,6 +84,15 @@ export default function Voting({ user }) {
     selectedVotes.accessibility;
   const bothSitesVisited = pair.every((s) => visitedSites[s._id]);
 
+  if (voteCount >= 3) {
+    return (
+      <div className="vote-wrapper">
+        <h2 className="vote-title">You've used all 3 of your votes 🎉</h2>
+        <p className="vote-subheading">Thanks for participating!</p>
+      </div>
+    );
+  }
+
   if (pair.length < 2) return <p className="cottage-text">Loading votes...</p>;
 
   return (
@@ -91,7 +100,7 @@ export default function Voting({ user }) {
       <h2 className="vote-title">Vote for your Favourite Submission</h2>
       {voteCount !== null && (
         <p className="vote-subheading">
-          You have voted <b>{voteCount}</b> times.
+          You have <b>{Math.max(3 - voteCount, 0)}</b> votes left.
         </p>
       )}
 

@@ -45,7 +45,8 @@ function App() {
       ) : !user.hasSubmitted ? (
         <SubmissionForm />
       ) : (
-        <Submitted /> //voting locked
+        // Voting started
+        <Voting user={user} />
       )}
       <LeaderboardManager />
     </div>
