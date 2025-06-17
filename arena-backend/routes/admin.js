@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Submission = require("../models/Submission");
 const User = require("../models/User");
+const Vote = require("../models/Vote");
+const ResetLog = require("../models/ResetLog");
 
 router.get("/leaderboard", async (req, res) => {
   try {
@@ -72,6 +74,30 @@ router.get("/leaderboard", async (req, res) => {
   } catch (err) {
     console.error("Admin leaderboard error:", err);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.post("/reset", async (req, res) => {
+  const clientSecret = req.headers["x-admin-secret"];
+  if (!clientSecret || clientSecret !== process.env.ADMIN_SECRET) {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
+
+  try {
+    await Submission.deleteMany({});
+    await Vote.deleteMany({});
+    await User.updateMany({}, { hasSubmitted: false, votes: 0 });
+
+    await ResetLog.create({
+      performedBy: "admin", // hard coding this to 'admin' for now
+      ip: req.ip,
+      note: "Manual reset from leaderboard UI",
+    });
+
+    res.json({ message: "Reset successful" });
+  } catch (err) {
+    console.error("Reset error:", err);
+    res.status(500).json({ message: "Reset failed" });
   }
 });
 

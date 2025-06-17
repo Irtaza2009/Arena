@@ -117,6 +117,27 @@ const Leaderboard = ({ onClose }) => {
     );
   };
 
+  const [showResetModal, setShowResetModal] = useState(false);
+
+  const handleResetConfirm = async (secret) => {
+    try {
+      const res = await axios.post(
+        "https://arena-backend.irtaza.xyz/admin/reset",
+        {},
+        {
+          headers: {
+            "x-admin-secret": secret,
+          },
+        }
+      );
+      alert("Reset successful!");
+      setShowResetModal(false);
+      window.location.reload();
+    } catch (err) {
+      alert(err.response?.data?.message || "Reset failed. Check your secret.");
+    }
+  };
+
   return (
     <div className="leaderboard-modal">
       <div className="leaderboard-content">
@@ -160,6 +181,20 @@ const Leaderboard = ({ onClose }) => {
         <div className="stats">
           <p>Total Submissions: {leaderboardData?.submissionCount || 0}</p>
         </div>
+        <div className="reset-section">
+          <button
+            className="reset-button"
+            onClick={() => setShowResetModal(true)}
+          >
+            Reset All Data
+          </button>
+          {showResetModal && (
+            <ResetConfirmationModal
+              onConfirm={handleResetConfirm}
+              onCancel={() => setShowResetModal(false)}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
@@ -176,7 +211,6 @@ const AdminGate = ({ onSuccess }) => {
     setError("");
 
     try {
-      // Verify the secret by making a test request
       const isValid = await verifyAdminSecret(secret);
       if (isValid) {
         localStorage.setItem("adminSecret", secret);
@@ -295,5 +329,50 @@ export const LeaderboardManager = () => {
         <Leaderboard onClose={() => setShowLeaderboard(false)} />
       )}
     </>
+  );
+};
+
+const ResetConfirmationModal = ({ onConfirm, onCancel }) => {
+  const [secret, setSecret] = useState("");
+  const [error, setError] = useState("");
+
+  const handleConfirm = () => {
+    if (!secret.trim()) {
+      setError("Secret is required.");
+      return;
+    }
+    onConfirm(secret);
+  };
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <h3>Reset Warning</h3>
+        <p>
+          This will permanently:
+          <ul>
+            <li>Delete all submissions</li>
+            <li>Delete all votes</li>
+            <li>Reset all users’ vote counts and submission status</li>
+          </ul>
+        </p>
+        <label>Re-enter Admin Secret to Confirm:</label>
+        <input
+          type="password"
+          value={secret}
+          onChange={(e) => setSecret(e.target.value)}
+          placeholder="Secret key..."
+        />
+        {error && <p className="error">{error}</p>}
+        <div className="modal-actions">
+          <button onClick={handleConfirm} className="confirm-btn">
+            Confirm Reset
+          </button>
+          <button onClick={onCancel} className="cancel-btn">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };

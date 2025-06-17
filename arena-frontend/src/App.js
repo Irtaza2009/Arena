@@ -55,3 +55,11 @@ function App() {
 }
 
 export default App;
+
+/* To Do:
+- Hackatime integration
+- Reset data
+- Export data
+- Sword animation upon reload
+- Reloading animation
+*/
