@@ -46,7 +46,8 @@ function App() {
         <SubmissionForm />
       ) : (
         // Voting started
-        <Voting user={user} />
+        <Submitted />
+        // <Voting user={user} />
       )}
       <LeaderboardManager />
     </div>
