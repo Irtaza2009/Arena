@@ -8,6 +8,7 @@ router.get("/me", auth, async (req, res) => {
     name: user.name,
     avatar: user.avatar,
     hasSubmitted: user.hasSubmitted,
+    slackId: user.slackId,
   });
 });
 
@@ -15,7 +16,7 @@ const Submission = require("../models/Submission");
 const Vote = require("../models/Vote");
 
 router.post("/submit", auth, async (req, res) => {
-  const { siteUrl, imageUrl, sourceUrl } = req.body;
+  const { siteUrl, imageUrl, sourceUrl, hackatime } = req.body;
 
   const already = await Submission.findOne({ user: req.user._id });
   if (already) return res.status(400).json({ message: "Already submitted!" });
@@ -25,6 +26,7 @@ router.post("/submit", auth, async (req, res) => {
     siteUrl,
     imageUrl,
     sourceUrl,
+    hackatime,
   });
 
   req.user.hasSubmitted = true;

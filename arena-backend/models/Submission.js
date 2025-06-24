@@ -8,6 +8,15 @@ const submissionSchema = new mongoose.Schema({
   eloCreativity: { type: Number, default: 1000 },
   eloFun: { type: Number, default: 1000 },
   eloAccessibility: { type: Number, default: 1000 },
+  hackatime: {
+    totalTime: String,
+    projects: [
+      {
+        name: String,
+        text: String, // e.g. "1h 24m"
+      },
+    ],
+  },
 });
 
 module.exports = mongoose.model("Submission", submissionSchema);
