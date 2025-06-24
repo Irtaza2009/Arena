@@ -14,6 +14,7 @@ const submissionSchema = new mongoose.Schema({
       {
         name: String,
         text: String, // e.g. "1h 24m"
+        total_seconds: Number,
       },
     ],
   },
