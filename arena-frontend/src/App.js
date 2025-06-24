@@ -43,7 +43,7 @@ function App() {
       ) : !user ? (
         <Login />
       ) : !user.hasSubmitted ? (
-        <SubmissionForm />
+        <SubmissionForm user={user} />
       ) : (
         // Voting started
         <Submitted />
