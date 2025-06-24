@@ -5,6 +5,7 @@ import SubmissionForm from "./components/SubmissionForm";
 import Voting from "./components/Voting";
 import Submitted from "./components/Submitted";
 import { LeaderboardManager } from "./components/Leaderboard";
+import SwordLoader from "./components/SwordLoader";
 
 import "./App.css";
 
@@ -37,7 +38,10 @@ function App() {
   return (
     <div className="App">
       {checking ? (
-        <p className="cottage-text">Loading...</p>
+        <>
+          <SwordLoader />
+          <p className="cottage-text">Loading...</p>{" "}
+        </>
       ) : error ? (
         <p className="cottage-text error">{error}</p>
       ) : !user ? (
@@ -57,8 +61,7 @@ function App() {
 export default App;
 
 /* To Do:
-- Hackatime integration
-- Reset data
+- Fix voting double reload bug
 - Export data
 - Sword animation upon reload
 - Reloading animation

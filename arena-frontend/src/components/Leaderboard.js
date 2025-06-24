@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import SwordLoader from "./SwordLoader";
 
 const Leaderboard = ({ onClose }) => {
   const [leaderboardData, setLeaderboardData] = useState(null);
@@ -167,6 +168,7 @@ const Leaderboard = ({ onClose }) => {
 
         {loading ? (
           <div className="loading-state">
+            <SwordLoader />
             <p className="cottage-text">Loading...</p>
           </div>
         ) : error ? (

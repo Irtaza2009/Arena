@@ -1,0 +1,157 @@
+.sword-loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 90px;
+  height: 500px;
+  position: relative;
+}
+
+.left-sword,
+.right-sword {
+  transform-origin: center center;
+}
+.left-sword {
+  transform: rotate(30deg);
+  animation: clash-left 1.8s ease-in-out infinite;
+}
+
+.right-sword {
+  transform: scaleX(-1) rotate(30deg); /* flipped and angled outward */
+  animation: clash-right 1.8s ease-in-out infinite;
+}
+
+/* Inner sword shape */
+.dagas {
+  position: relative;
+  width: 30px;
+  height: 500px;
+  transform-origin: center center;
+  transform: scale(0.7);
+}
+
+.daga {
+  position: absolute;
+  border-top: 192px solid #aab9ae;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  height: 0;
+  width: 30px;
+}
+
+.daga::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-bottom: 50px solid #aab9ae;
+  margin: -241px -10px;
+}
+
+.daga3 {
+  position: absolute;
+  border-top: 192px solid #9aa89e;
+  border-left: 9px solid transparent;
+  border-right: 0px solid transparent;
+  height: 0;
+  width: 16px;
+}
+
+.daga3::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-bottom: 50px solid #9aa89e;
+  border-left: 25px solid transparent;
+  margin: -241px -10px;
+}
+
+.base {
+  position: absolute;
+  width: 65px;
+  height: 30px;
+  border-radius: 12px;
+  background: #63666b;
+  margin: 192px -9px;
+}
+
+.base::before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  background: #ff566d;
+  margin: 2px 21px;
+}
+
+.base::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 100%;
+  background: #f99db3;
+  margin: 3px 25px;
+}
+
+.base3 {
+  position: absolute;
+  width: 25px;
+  height: 50px;
+  background: #63666b;
+  margin: 221px 12px;
+  box-shadow: inset 2px 2px 1px #63666b, inset 2px 3px 5px rgba(0, 0, 0, 0.3),
+    inset -2px -3px 5px rgba(255, 255, 255, 0.5);
+}
+
+.base3::before {
+  content: "";
+  position: absolute;
+  width: 53px;
+  height: 35px;
+  border-radius: 50px;
+  background: #63666b;
+  margin: 33px -14px;
+}
+
+.base3::after {
+  content: "";
+  position: absolute;
+  width: 17px;
+  height: 14px;
+  border-radius: 100%;
+  background: #aab9ae;
+  margin: 43px 0px;
+}
+
+@keyframes clash-left {
+  0% {
+    transform: rotate(40deg);
+  }
+
+  50% {
+    transform: rotate(-20deg);
+  }
+
+  100% {
+    transform: rotate(40deg);
+  }
+}
+
+@keyframes clash-right {
+  0% {
+    transform: scaleX(-1) rotate(40deg);
+  }
+
+  50% {
+    transform: scaleX(-1) rotate(-20deg);
+  }
+
+  100% {
+    transform: scaleX(-1) rotate(40deg);
+  }
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Voting.css";
+import SwordLoader from "./SwordLoader";
 
 export default function Voting({ user }) {
   const [submissions, setSubmissions] = useState([]);
@@ -93,7 +94,13 @@ export default function Voting({ user }) {
     );
   }
 
-  if (pair.length < 2) return <p className="cottage-text">Loading votes...</p>;
+  if (pair.length < 2)
+    return (
+      <>
+        <SwordLoader />
+        <p className="cottage-text">Loading votes...</p>
+      </>
+    );
 
   return (
     <div className="vote-wrapper">
