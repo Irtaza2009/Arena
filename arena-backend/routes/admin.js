@@ -13,6 +13,61 @@ router.get("/leaderboard", async (req, res) => {
       return res.status(403).json({ message: "Unauthorized" });
     }
 
+    // Get all submissions with user info
+    const submissions = await Submission.find({})
+      .populate("user", "name avatar")
+      .lean();
+
+    // Get all votes
+    const votes = await Vote.find({}).lean();
+
+    // Build stats for each submission
+    const statsMap = {};
+    submissions.forEach((sub) => {
+      statsMap[sub._id.toString()] = {
+        submission: sub,
+        showdowns: 0,
+        fun: { won: 0, lost: 0 },
+        creativity: { won: 0, lost: 0 },
+        accessibility: { won: 0, lost: 0 },
+      };
+    });
+
+    votes.forEach((vote) => {
+      // Fun
+      if (vote.funWinnerId && statsMap[vote.funWinnerId]) {
+        statsMap[vote.funWinnerId].showdowns++;
+        statsMap[vote.funWinnerId].fun.won++;
+      }
+      if (vote.funLoserId && statsMap[vote.funLoserId]) {
+        statsMap[vote.funLoserId].showdowns++;
+        statsMap[vote.funLoserId].fun.lost++;
+      }
+      // Creativity
+      if (vote.creativityWinnerId && statsMap[vote.creativityWinnerId]) {
+        statsMap[vote.creativityWinnerId].showdowns++;
+        statsMap[vote.creativityWinnerId].creativity.won++;
+      }
+      if (vote.creativityLoserId && statsMap[vote.creativityLoserId]) {
+        statsMap[vote.creativityLoserId].showdowns++;
+        statsMap[vote.creativityLoserId].creativity.lost++;
+      }
+      // Accessibility
+      if (vote.accessibilityWinnerId && statsMap[vote.accessibilityWinnerId]) {
+        statsMap[vote.accessibilityWinnerId].showdowns++;
+        statsMap[vote.accessibilityWinnerId].accessibility.won++;
+      }
+      if (vote.accessibilityLoserId && statsMap[vote.accessibilityLoserId]) {
+        statsMap[vote.accessibilityLoserId].showdowns++;
+        statsMap[vote.accessibilityLoserId].accessibility.lost++;
+      }
+    });
+
+    // Convert to array and sort by showdowns
+    const votingStats = Object.values(statsMap).sort(
+      (a, b) => b.showdowns - a.showdowns
+    );
+
     // Database-level aggregation for better performance
     const leaderboardData = await Submission.aggregate([
       {
@@ -70,6 +125,7 @@ router.get("/leaderboard", async (req, res) => {
           (a, b) => b.eloAccessibility - a.eloAccessibility
         ),
       },
+      votingStats,
     });
   } catch (err) {
     console.error("Admin leaderboard error:", err);
