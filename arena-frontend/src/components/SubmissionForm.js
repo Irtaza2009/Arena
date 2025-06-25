@@ -37,7 +37,7 @@ export default function SubmissionForm({ user }) {
     const fetchProjects = async () => {
       try {
         const res = await axios.get(
-          `https://hackatime.hackclub.com/api/v1/users/${user.slackId}/stats?start_date=2025-6-21&features=projects`
+          `https://hackatime.hackclub.com/api/v1/users/${user.slackId}/stats?start_date=2025-6-24&features=projects`
         );
         setProjects(res.data.data.projects || []);
       } catch (e) {

@@ -50,8 +50,8 @@ function App() {
         <SubmissionForm user={user} />
       ) : (
         // Voting started
-        <Submitted />
-        // <Voting user={user} />
+        // <Submitted />
+        <Voting user={user} />
       )}
       <LeaderboardManager />
     </div>
@@ -63,6 +63,5 @@ export default App;
 /* To Do:
 - Fix voting double reload bug
 - Export data
-- Sword animation upon reload
-- Reloading animation
+- Own project should not be in voting
 */
