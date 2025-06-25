@@ -33,34 +33,38 @@ router.get("/leaderboard", async (req, res) => {
       };
     });
 
+    // Track which votes each submission has already been counted for (for showdowns)
+    const showdownTracker = {};
+
     votes.forEach((vote) => {
-      // Fun
-      if (vote.funWinnerId && statsMap[vote.funWinnerId]) {
-        statsMap[vote.funWinnerId].showdowns++;
-        statsMap[vote.funWinnerId].fun.won++;
-      }
-      if (vote.funLoserId && statsMap[vote.funLoserId]) {
-        statsMap[vote.funLoserId].showdowns++;
-        statsMap[vote.funLoserId].fun.lost++;
-      }
-      // Creativity
-      if (vote.creativityWinnerId && statsMap[vote.creativityWinnerId]) {
-        statsMap[vote.creativityWinnerId].showdowns++;
-        statsMap[vote.creativityWinnerId].creativity.won++;
-      }
-      if (vote.creativityLoserId && statsMap[vote.creativityLoserId]) {
-        statsMap[vote.creativityLoserId].showdowns++;
-        statsMap[vote.creativityLoserId].creativity.lost++;
-      }
-      // Accessibility
-      if (vote.accessibilityWinnerId && statsMap[vote.accessibilityWinnerId]) {
-        statsMap[vote.accessibilityWinnerId].showdowns++;
-        statsMap[vote.accessibilityWinnerId].accessibility.won++;
-      }
-      if (vote.accessibilityLoserId && statsMap[vote.accessibilityLoserId]) {
-        statsMap[vote.accessibilityLoserId].showdowns++;
-        statsMap[vote.accessibilityLoserId].accessibility.lost++;
-      }
+      // For this vote, collect all unique submission IDs that appeared in any category
+      const pairSet = new Set();
+      vote.votes.forEach(({ winner, loser }) => {
+        if (winner) pairSet.add(winner.toString());
+        if (loser) pairSet.add(loser.toString());
+      });
+
+      // For each submission in this pair, increment showdowns ONCE per vote
+      pairSet.forEach((subId) => {
+        if (statsMap[subId]) {
+          // Only increment if this vote hasn't already been counted for this submission
+          showdownTracker[subId] = showdownTracker[subId] || new Set();
+          if (!showdownTracker[subId].has(vote._id.toString())) {
+            statsMap[subId].showdowns++;
+            showdownTracker[subId].add(vote._id.toString());
+          }
+        }
+      });
+
+      // Count wins/losses per category
+      vote.votes.forEach(({ category, winner, loser }) => {
+        if (winner && statsMap[winner.toString()]) {
+          statsMap[winner.toString()][category].won++;
+        }
+        if (loser && statsMap[loser.toString()]) {
+          statsMap[loser.toString()][category].lost++;
+        }
+      });
     });
 
     // Convert to array and sort by showdowns
