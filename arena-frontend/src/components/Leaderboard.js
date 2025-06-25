@@ -7,6 +7,11 @@ const Leaderboard = ({ onClose }) => {
   const [activeTab, setActiveTab] = useState("average");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [votingStats, setVotingStats] = useState([]);
+  const [expandedStats, setExpandedStats] = useState({}); // Track which stats are expanded
+
+  const defaultAvatar =
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABlApw1AAAAM1BMVEX4+PiGhoaUlJTq6uq/v7+NjY3x8fHb29uxsbHNzc2jo6PGxsbi4uKbm5u3t7fU1NSpqalb9J8wAAAERklEQVR4nO2cDZarIAyFq6go/tT9r/bJME61VgsSknBevhXcQAIkBB4PQRAEQRAEQRAEQRAEQRAEQRAEGFRXtaasi4W6NHP1HKgVBaD6+Uf5nnruFLUyH5rKHMWvjOxt0BfqHa2m1njBd/mWsqPWeYKffIvh6EjN5Cv/x5HYmaDLEP2LHz2pFe8JGn5HRa15g/L2/i0jGzdSge6zUjKxYPiw7XpawOJ8cV//crxgYIGK0M/Bgrv+v0IdB02k/sWChtSAOVZ/UcyU+qt4/UXR0+lXEPqLgi6QowPAMVLpB3EgC9GxKG4H2FLTrEQtlP4lPaDQDxTBDortDHACSKYAdAIoogBsCXLgL0RAe8BKja1fw+ovCux6F2gIWyZkA4A9CN2HBmj92Ee6Ht4A3FM1QCLzDm5iAx4CS26Jqb+B118UmJsx+C5gwYziZwoDMO89gA9CDsxl6EY1/TuYezH4QcKCmROIAWLA/25A9qtQkn0AMy3uUhiAuRMnOUpgZsWwRaFfUFMysLruC9yk+NbV/DUG1YAE6yhuXSVBRoNb2WrggwBVf4IgwL5tBd/KsBvpwH0I/YIAeB3Cv6IBXocIuklBwxh3F3OATgFJLyzgFKDWRf8AnAKifmqwGjvJRf0DrlmCru0M6J6GsJsdJI6pHMgS3/NH3bcY0/X6C3HfZfSplLDlzxFZ42LQhB9lAQP9URaw0B9hAbn/rzxvrUU1o2c0d3rYqfvW94Q9wrJMtF3rR7qgSSgZPkhs/GO5rrgNv0N5Xp3xe8b3h4cJ9cRXvkV145V80/N0nh2qP0kTTMV78Dc0upp3M1HOvc5g7N9Qg9Zd99RDNgMvCIIgCAIlSnfV1M6mLD+kZ3VZGtNOVafJn6EfaYZumgNyytFMfA53Q9/erFGPc089GUNvIsvTtSEzotET1BVTi1/ianQL2ixR49oANvZbSqzPq5rqMm2PsgHhDzGVYvA3JK4Z+X+jxdIEDPkWk2ZhHZDkWxLMQnj9nJcJVdrQ/UAJeX+mky2clyZATQK297yAucUJ/QIPEohfxMiG3xEbCfe+wIMk7js9SvdZibkPTPBy/g633YjY/V/cexvRkLv/i/nGeqpINq8zwkM59gc/aEK3ZW76Qy3gpz/MAohuSngCfmVkFb8vRl8L2Kz/73j2+CZ5LAyD156c5K0wFB71O7gPCFNQf1+KWC5AL74GMuMAcHw52CX5dweWy/SA5w6253I/Y+9AlgsnSvLWH57zUgWjFOaK03eLrLewLWdxnEEEO06+Sc5mAs5enmUzASdRkOS/lFR8ioJMliDHhynIZA9YOe4FSX6dSscxtckohC2Hv3AyOIbueQ/jzDzoeKTLzIMO/whktgZZ9tlxRseIlf1xIrsQeK9yMS0mXrEPAmo1d9jmxgk+8k7PNoqzOomubMuMTO5Tw9g+p86inPLO9jyX4Sq6X0fFAAqcAf8AkU5HyWczqdIAAAAASUVORK5CYII="; // Default avatar path
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +39,7 @@ const Leaderboard = ({ onClose }) => {
           leaderboardAccessibility: response.data.leaderboards.accessibility,
         };
 
+        setVotingStats(response.data.votingStats || []);
         setLeaderboardData(transformedData);
       } catch (err) {
         console.error("Leaderboard fetch error:", err);
@@ -73,7 +79,7 @@ const Leaderboard = ({ onClose }) => {
                   src={voter.avatar}
                   alt={voter.name}
                   className="avatar"
-                  onError={(e) => (e.target.src = "/default-avatar.png")}
+                  onError={(e) => (e.target.src = defaultAvatar)}
                 />
                 <span className="name">{voter.name}</span>
                 <span className="score">{voter.votes} votes</span>
@@ -95,10 +101,10 @@ const Leaderboard = ({ onClose }) => {
           <div key={`${activeTab}-${index}`} className="leaderboard-item">
             <span className="rank">{index + 1}</span>
             <img
-              src={item.user?.avatar || "/default-avatar.png"}
+              src={item.user?.avatar || defaultAvatar}
               alt={item.user?.name || "Anonymous"}
               className="avatar"
-              onError={(e) => (e.target.src = "/default-avatar.png")}
+              onError={(e) => (e.target.src = defaultAvatar)}
             />
             <span className="name">{item.user?.name || "Anonymous"}</span>
             <span className="score">
@@ -114,6 +120,78 @@ const Leaderboard = ({ onClose }) => {
             </span>
           </div>
         ))}
+      </div>
+    );
+  };
+
+  const renderVotingStats = () => {
+    if (!votingStats || votingStats.length === 0)
+      return <p className="cottage-text">No voting stats yet</p>;
+
+    return (
+      <div className="leaderboard-list">
+        {votingStats.map((stat, idx) => {
+          const isExpanded = expandedStats[stat.submission._id];
+          return (
+            <div key={stat.submission._id} className="leaderboard-item">
+              <span className="rank">{idx + 1}</span>
+              <img
+                src={stat.submission.user?.avatar || defaultAvatar}
+                alt={stat.submission.user?.name || "Anonymous"}
+                className="avatar"
+                onError={(e) => (e.target.src = defaultAvatar)}
+              />
+              <span className="name">
+                {stat.submission.user?.name || "Anonymous"}
+              </span>
+              <span className="score">
+                Showdowns: <b>{stat.showdowns}</b>
+                <button
+                  style={{
+                    marginLeft: "0.7em",
+                    fontSize: "0.9em",
+                    padding: "0.1em 0.7em",
+                    borderRadius: "12px",
+                    border: "1px solid #ccc",
+                    background: "#fafafa",
+                    cursor: "pointer",
+                  }}
+                  onClick={() =>
+                    setExpandedStats((prev) => ({
+                      ...prev,
+                      [stat.submission._id]: !isExpanded,
+                    }))
+                  }
+                  aria-expanded={isExpanded}
+                  aria-controls={`voting-stats-details-${stat.submission._id}`}
+                >
+                  {isExpanded ? "Hide" : "Details"}
+                </button>
+                {isExpanded && (
+                  <div
+                    id={`voting-stats-details-${stat.submission._id}`}
+                    style={{
+                      marginTop: "0.5em",
+                      fontSize: "0.95em",
+                      background: "#f8f8f8",
+                      borderRadius: "8px",
+                      padding: "0.5em 0.8em",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.03)",
+                    }}
+                  >
+                    Fun: <b>{stat.fun.won} won</b>, <b>{stat.fun.lost} lost</b>
+                    <br />
+                    Creativity: <b>{stat.creativity.won} won</b>,{" "}
+                    <b>{stat.creativity.lost} lost</b>
+                    <br />
+                    Accessibility: <b>{stat.accessibility.won} won</b>,{" "}
+                    <b>{stat.accessibility.lost} lost</b>
+                  </div>
+                )}
+              </span>
+            </div>
+          );
+        })}
       </div>
     );
   };
@@ -152,18 +230,25 @@ const Leaderboard = ({ onClose }) => {
         <h2>Leaderboard</h2>
 
         <div className="tabs">
-          {["average", "fun", "creativity", "accessibility", "voters"].map(
-            (tab) => (
-              <button
-                key={tab}
-                className={activeTab === tab ? "active" : ""}
-                onClick={() => setActiveTab(tab)}
-                disabled={loading}
-              >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </button>
-            )
-          )}
+          {[
+            "average",
+            "fun",
+            "creativity",
+            "accessibility",
+            "voters",
+            "voting-stats",
+          ].map((tab) => (
+            <button
+              key={tab}
+              className={activeTab === tab ? "active" : ""}
+              onClick={() => setActiveTab(tab)}
+              disabled={loading}
+            >
+              {tab === "voting-stats"
+                ? "Voting Stats"
+                : tab.charAt(0).toUpperCase() + tab.slice(1)}
+            </button>
+          ))}
         </div>
 
         {loading ? (
@@ -176,6 +261,8 @@ const Leaderboard = ({ onClose }) => {
             <p className="cottage-text error">{error}</p>
             <button onClick={() => window.location.reload()}>Retry</button>
           </div>
+        ) : activeTab === "voting-stats" ? (
+          renderVotingStats()
         ) : (
           renderLeaderboard()
         )}

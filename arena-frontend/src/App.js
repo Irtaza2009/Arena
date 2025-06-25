@@ -62,5 +62,5 @@ export default App;
 
 /* To Do:
 - Export data
-- Own project should not be in voting
+- Add projects gallery
 */
