@@ -61,7 +61,6 @@ function App() {
 export default App;
 
 /* To Do:
-- Fix voting double reload bug
 - Export data
 - Own project should not be in voting
 */

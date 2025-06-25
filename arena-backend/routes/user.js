@@ -40,7 +40,8 @@ router.get("/submissions", auth, async (req, res) => {
     return res.status(403).json({ message: "Submit first to view!" });
   }
 
-  const submissions = await Submission.find()
+  // Exclude the user's own submission(s)
+  const submissions = await Submission.find({ user: { $ne: req.user._id } })
     .populate("user", "name avatar")
     .select("-__v");
 
