@@ -25,7 +25,7 @@
 }
 
 .vote-card {
-  width: 240px;
+  width: 290px;
   height: min-content;
   background-color: #f4f1eb;
   padding: 1rem;
@@ -42,7 +42,8 @@
 
 .vote-image {
   width: 100%;
-  height: auto;
+  height: 180px;
+  object-fit: cover;
   border-radius: 12px;
   margin-bottom: 0.5rem;
 }

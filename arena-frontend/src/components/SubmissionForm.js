@@ -210,7 +210,8 @@ export default function SubmissionForm({ user }) {
             alt="Image Preview"
             style={{
               width: "100%",
-              height: "auto",
+              height: "180px",
+              objectFit: "cover",
               borderRadius: "4px",
             }}
           />

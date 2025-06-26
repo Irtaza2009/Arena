@@ -6,6 +6,7 @@ import Voting from "./components/Voting";
 import Submitted from "./components/Submitted";
 import { LeaderboardManager } from "./components/Leaderboard";
 import SwordLoader from "./components/SwordLoader";
+import Gallery from "./components/Gallery";
 
 import "./App.css";
 
@@ -13,6 +14,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [checking, setChecking] = useState(true);
   const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState("home");
 
   useEffect(() => {
     axios
@@ -37,10 +39,29 @@ function App() {
 
   return (
     <div className="App">
-      {checking ? (
+      {/* Tabs */}
+      <div className="tabs" style={{ marginTop: "1rem", marginBottom: "0rem" }}>
+        <button
+          className={activeTab === "home" ? "active" : ""}
+          onClick={() => setActiveTab("home")}
+        >
+          Home
+        </button>
+        <button
+          className={activeTab === "gallery" ? "active" : ""}
+          onClick={() => setActiveTab("gallery")}
+        >
+          Gallery
+        </button>
+      </div>
+
+      {/* Tab Content */}
+      {activeTab === "gallery" ? (
+        <Gallery />
+      ) : checking ? (
         <>
           <SwordLoader />
-          <p className="cottage-text">Loading...</p>{" "}
+          <p className="cottage-text">Loading...</p>
         </>
       ) : error ? (
         <p className="cottage-text error">{error}</p>
@@ -49,8 +70,6 @@ function App() {
       ) : !user.hasSubmitted ? (
         <SubmissionForm user={user} />
       ) : (
-        // Voting started
-        //<Submitted />
         <Voting user={user} />
       )}
       <LeaderboardManager />
@@ -62,5 +81,4 @@ export default App;
 
 /* To Do:
 - Export data
-- Add projects gallery
 */
