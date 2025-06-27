@@ -37,23 +37,41 @@ function App() {
       });
   }, []);
 
+  // Sign out handler
+  const handleSignOut = () => {
+    axios
+      .post(
+        "https://arena-backend.irtaza.xyz/auth/logout",
+        {},
+        { withCredentials: true }
+      )
+      .finally(() => {
+        window.location.reload();
+      });
+  };
+
   return (
     <div className="App">
-      {/* Tabs */}
-      <div className="tabs" style={{ marginTop: "1rem", marginBottom: "0rem" }}>
-        <button
-          className={activeTab === "home" ? "active" : ""}
-          onClick={() => setActiveTab("home")}
+      {/* Tabs - only show if signed in */}
+      {user && (
+        <div
+          className="tabs"
+          style={{ marginTop: "1rem", marginBottom: "0rem" }}
         >
-          Home
-        </button>
-        <button
-          className={activeTab === "gallery" ? "active" : ""}
-          onClick={() => setActiveTab("gallery")}
-        >
-          Gallery
-        </button>
-      </div>
+          <button
+            className={activeTab === "home" ? "active" : ""}
+            onClick={() => setActiveTab("home")}
+          >
+            Home
+          </button>
+          <button
+            className={activeTab === "gallery" ? "active" : ""}
+            onClick={() => setActiveTab("gallery")}
+          >
+            Gallery
+          </button>
+        </div>
+      )}
 
       {/* Tab Content */}
       {activeTab === "gallery" ? (
@@ -76,6 +94,22 @@ function App() {
         <Submitted lockedType="voting" />
       )}
       <LeaderboardManager />
+      <div
+        style={{ marginTop: "1.5rem", textAlign: "center", fontSize: "1rem" }}
+      >
+        <span
+          style={{
+            color: "#888",
+            textDecoration: "underline",
+            cursor: "pointer",
+            display: "inline-block",
+            marginTop: "0.5rem",
+          }}
+          onClick={handleSignOut}
+        >
+          Sign out
+        </span>
+      </div>
     </div>
   );
 }
