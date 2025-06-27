@@ -79,4 +79,15 @@ router.get("/slack/callback", async (req, res) => {
   }
 });
 
+// Log out route
+router.post("/logout", (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  });
+  req.session?.destroy?.(() => {});
+  res.json({ message: "Logged out" });
+});
+
 module.exports = router;
