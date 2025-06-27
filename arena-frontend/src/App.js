@@ -90,26 +90,13 @@ function App() {
         //<SubmissionForm user={user} />
         <Submitted lockedType="submission" />
       ) : (
-        //<Voting user={user} />
-        <Submitted lockedType="voting" />
+        <Voting user={user} />
+        //<Submitted lockedType="voting" />
       )}
       <LeaderboardManager />
-      <div
-        style={{ marginTop: "1.5rem", textAlign: "center", fontSize: "1rem" }}
-      >
-        <span
-          style={{
-            color: "#888",
-            textDecoration: "underline",
-            cursor: "pointer",
-            display: "inline-block",
-            marginTop: "0.5rem",
-          }}
-          onClick={handleSignOut}
-        >
-          Sign out
-        </span>
-      </div>
+      <footer className="footer-signout">
+        <span onClick={handleSignOut}>Sign out</span>
+      </footer>
     </div>
   );
 }

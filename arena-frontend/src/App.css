@@ -7,6 +7,7 @@ body {
   font-family: "Patrick Hand", cursive;
   color: #3b2e24; /* deep earthy brown for text */
   transition: background 0.3s ease;
+  overflow: hidden;
 }
 
 .App {
@@ -119,11 +120,18 @@ h4 {
 }
 
 .footer {
+  position: fixed;
+  bottom: 1.4rem;
   margin-top: 40px;
-  padding: 20px;
+  padding: 20px 0 0 0;
   text-align: center;
   font-size: 0.9rem;
   color: #666;
+  background: none;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  border: none;
 }
 
 .footer a {
@@ -133,6 +141,22 @@ h4 {
 
 .footer a:hover {
   text-decoration: underline;
+}
+
+.footer-signout {
+  color: #888;
+  text-decoration: underline;
+  cursor: pointer;
+  bottom: 0.25rem;
+  margin-top: 0.7rem;
+  font-size: 0.9rem;
+  display: inline-block;
+  transition: color 0.2s;
+  position: fixed;
+}
+
+.footer-signout:hover {
+  color: #c4453e;
 }
 
 /* Leaderboard styles */
@@ -199,6 +223,25 @@ h4 {
 }
 
 .tabs button.active {
+  background-color: #c89f94;
+  color: white;
+}
+
+.l-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.l-tabs button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+.l-tabs button.active {
   background-color: #c89f94;
   color: white;
 }
