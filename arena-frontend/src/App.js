@@ -57,7 +57,8 @@ function App() {
 
       {/* Tab Content */}
       {activeTab === "gallery" ? (
-        <Gallery />
+        //<Gallery />
+        <Submitted lockedType="gallery" />
       ) : checking ? (
         <>
           <SwordLoader />
@@ -68,9 +69,11 @@ function App() {
       ) : !user ? (
         <Login />
       ) : !user.hasSubmitted ? (
-        <SubmissionForm user={user} />
+        //<SubmissionForm user={user} />
+        <Submitted lockedType="submission" />
       ) : (
-        <Voting user={user} />
+        //<Voting user={user} />
+        <Submitted lockedType="voting" />
       )}
       <LeaderboardManager />
     </div>

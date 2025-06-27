@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Submitted() {
+export default function Submitted({ lockedType = "voting" }) {
   return (
     <div className="submitted-container">
       <h1 className="submitted-title">🎉 Submission Received!</h1>
@@ -9,8 +9,8 @@ export default function Submitted() {
         recorded.
       </p>
       <p className="error">
-        🕒 Voting is currently locked. Please check back once the voting round
-        begins.
+        🕒 {lockedType.charAt(0).toUpperCase() + lockedType.slice(1)} is
+        currently locked. Please check back once {lockedType} begins.
       </p>
     </div>
   );
