@@ -5,6 +5,7 @@ const submissionSchema = new mongoose.Schema({
   siteUrl: String,
   imageUrl: String,
   sourceUrl: String,
+  projectName: String,
   description: String,
   eloCreativity: { type: Number, default: 1000 },
   eloFun: { type: Number, default: 1000 },
