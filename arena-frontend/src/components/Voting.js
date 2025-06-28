@@ -137,7 +137,7 @@ export default function Voting({ user }) {
                   setVisitedSites((prev) => ({ ...prev, [s._id]: true }))
                 }
               >
-                Visit Site
+                Visit
               </a>
               {s.sourceUrl && (
                 <a
@@ -169,7 +169,7 @@ export default function Voting({ user }) {
 
             {!bothSitesVisited && (
               <p className="visit-warning">
-                ⚠️ You must visit both sites before voting.
+                ⚠️ You must visit both demoes before voting.
               </p>
             )}
           </div>

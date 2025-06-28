@@ -64,20 +64,25 @@ export default function SubmissionForm({ user }) {
   };
 
   const submit = async () => {
-    if (!siteUrl || !imageUrl) {
-      setMessage("Please fill in both fields.");
+    if (!siteUrl || !imageUrl || !sourceUrl) {
+      setMessage("Please fill in all fields!");
       return;
     }
 
     if (!isValidUrl(siteUrl)) {
       setMessage(
-        "Invalid site URL. Please provide a valid URL. (URL should start with http:// or https://)"
+        "Invalid demo URL. Please provide a valid URL. (URL should start with http:// or https://)"
       );
       return;
     }
 
     if (!isValidUrl(imageUrl)) {
       setMessage("Invalid image URL. Please provide a valid image URL.");
+      return;
+    }
+
+    if (!isValidUrl(sourceUrl)) {
+      setMessage("Invalid source code URL. Please provide a valid URL.");
       return;
     }
 
@@ -141,7 +146,7 @@ export default function SubmissionForm({ user }) {
           htmlFor="siteUrl"
           style={{ display: "block", fontWeight: "bold" }}
         >
-          Site URL
+          Demo URL
         </label>
         <input
           id="siteUrl"
@@ -163,7 +168,7 @@ export default function SubmissionForm({ user }) {
           htmlFor="sourceUrl"
           style={{ display: "block", fontWeight: "bold" }}
         >
-          Source Code URL (Optional)
+          Source Code URL
         </label>
         <input
           id="sourceUrl"

@@ -7,7 +7,7 @@ body {
   font-family: "Patrick Hand", cursive;
   color: #3b2e24; /* deep earthy brown for text */
   transition: background 0.3s ease;
-  overflow: hidden;
+  overflow: auto; /* allow scrolling again */
 }
 
 .App {
@@ -120,8 +120,6 @@ h4 {
 }
 
 .footer {
-  position: fixed;
-  bottom: 1.4rem;
   margin-top: 40px;
   padding: 20px 0 0 0;
   text-align: center;
@@ -147,12 +145,11 @@ h4 {
   color: #888;
   text-decoration: underline;
   cursor: pointer;
-  bottom: 0.25rem;
   margin-top: 0.7rem;
   font-size: 0.9rem;
   display: inline-block;
   transition: color 0.2s;
-  position: fixed;
+  position: static; /* remove fixed */
 }
 
 .footer-signout:hover {
