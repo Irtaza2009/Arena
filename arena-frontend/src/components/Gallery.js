@@ -71,6 +71,22 @@ export default function Gallery({
                 </a>
               )}
             </div>
+            {s.description && (
+              <div
+                style={{
+                  margin: "0.5rem 0",
+                  fontSize: "1em",
+                  color: "#3b2e24",
+                  background: "#f8f4ee",
+                  borderRadius: "8px",
+                  padding: "0.5em",
+                  minHeight: "2.5em",
+                  wordBreak: "break-word",
+                }}
+              >
+                <b>Description:</b> {s.description}
+              </div>
+            )}
             {s.hackatime?.totalTime && (
               <div style={{ fontSize: "0.95em", marginTop: "0.5em" }}>
                 <b>HackaTime:</b> {s.hackatime.totalTime}

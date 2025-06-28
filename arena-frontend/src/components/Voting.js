@@ -150,7 +150,22 @@ export default function Voting({ user }) {
                 </a>
               )}
             </p>
-
+            {s.description && (
+              <div
+                style={{
+                  margin: "0.5rem 0",
+                  fontSize: "1em",
+                  color: "#3b2e24",
+                  background: "#f8f4ee",
+                  borderRadius: "8px",
+                  padding: "0.5em",
+                  minHeight: "2.5em",
+                  wordBreak: "break-word",
+                }}
+              >
+                <b>Description:</b> {s.description}
+              </div>
+            )}
             <div className="vote-categories">
               <p>Pick for:</p>
               {["creativity", "fun", "accessibility"].map((category) => (

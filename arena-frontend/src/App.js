@@ -75,9 +75,9 @@ function App() {
 
       {/* Tab Content */}
       {activeTab === "gallery" ? (
-        //<Gallery />
-        <Submitted lockedType="gallery" />
-      ) : checking ? (
+        <Gallery />
+      ) : //<Submitted lockedType="gallery" />
+      checking ? (
         <>
           <SwordLoader />
           <p className="cottage-text">Loading...</p>
@@ -87,11 +87,11 @@ function App() {
       ) : !user ? (
         <Login />
       ) : !user.hasSubmitted ? (
-        //<SubmissionForm user={user} />
-        <Submitted lockedType="submission" />
+        <SubmissionForm user={user} />
       ) : (
-        //<Voting user={user} />
-        <Submitted lockedType="voting" />
+        //<Submitted lockedType="submission" />
+        <Voting user={user} />
+        //<Submitted lockedType="voting" />
       )}
       <LeaderboardManager />
       <footer className="footer-signout">

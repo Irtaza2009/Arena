@@ -31,6 +31,8 @@ export default function SubmissionForm({ user }) {
   const [imagePreview, setImagePreview] = useState("");
   const [projects, setProjects] = useState([]);
   const [selectedProjects, setSelectedProjects] = useState([]);
+  const [description, setDescription] = useState("");
+  const DESCRIPTION_LIMIT = 100;
 
   useEffect(() => {
     if (!user?.slackId) return;
@@ -64,8 +66,15 @@ export default function SubmissionForm({ user }) {
   };
 
   const submit = async () => {
-    if (!siteUrl || !imageUrl || !sourceUrl) {
+    if (!siteUrl || !imageUrl || !sourceUrl || !description.trim()) {
       setMessage("Please fill in all fields!");
+      return;
+    }
+
+    if (description.length > DESCRIPTION_LIMIT) {
+      setMessage(
+        `Description can not be greater than ${DESCRIPTION_LIMIT} characters.`
+      );
       return;
     }
 
@@ -97,6 +106,7 @@ export default function SubmissionForm({ user }) {
           siteUrl: sanitizedSiteUrl,
           imageUrl,
           sourceUrl,
+          description,
           hackatime: {
             totalTime: selectedTotalTime,
             projects: selectedProjects.map((p) => ({
@@ -222,6 +232,42 @@ export default function SubmissionForm({ user }) {
           />
         </div>
       )}
+
+      <div style={{ marginBottom: "1rem" }}>
+        <label
+          htmlFor="description"
+          style={{ display: "block", fontWeight: "bold" }}
+        >
+          Project Description
+        </label>
+        <textarea
+          id="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+          maxLength={DESCRIPTION_LIMIT}
+          rows={4}
+          style={{
+            width: "100%",
+            padding: "0.5rem",
+            marginBottom: "0.3rem",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            fontFamily: "inherit",
+            fontSize: "1rem",
+            resize: "vertical",
+          }}
+        />
+        <div
+          style={{
+            fontSize: "0.95em",
+            color:
+              description.length > DESCRIPTION_LIMIT - 20 ? "#c4453e" : "#888",
+          }}
+        >
+          {description.length}/{DESCRIPTION_LIMIT} characters
+        </div>
+      </div>
 
       {projects.length > 0 && (
         <div style={{ marginBottom: "1rem" }}>

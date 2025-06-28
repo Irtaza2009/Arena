@@ -146,6 +146,7 @@ h4 {
   text-decoration: underline;
   cursor: pointer;
   margin-top: 0.7rem;
+  margin-bottom: 0.5rem;
   font-size: 0.9rem;
   display: inline-block;
   transition: color 0.2s;
@@ -208,8 +209,6 @@ h4 {
   gap: 0.5rem;
   margin-top: 0;
   margin-bottom: 1rem;
-  position: fixed;
-  top: 0;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -220,25 +219,6 @@ h4 {
 }
 
 .tabs button.active {
-  background-color: #c89f94;
-  color: white;
-}
-
-.l-tabs {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.l-tabs button {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-}
-
-.l-tabs button.active {
   background-color: #c89f94;
   color: white;
 }

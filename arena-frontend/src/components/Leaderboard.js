@@ -229,7 +229,7 @@ const Leaderboard = ({ onClose }) => {
         </button>
         <h2>Leaderboard</h2>
 
-        <div className="l-tabs">
+        <div className="tabs">
           {[
             "average",
             "fun",
