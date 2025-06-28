@@ -26,6 +26,7 @@ export default function SubmissionForm({ user }) {
   const [siteUrl, setSiteUrl] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [sourceUrl, setSourceUrl] = useState("");
+  const [projectName, setProjectName] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
@@ -66,11 +67,16 @@ export default function SubmissionForm({ user }) {
   };
 
   const submit = async () => {
-    if (!siteUrl || !imageUrl || !sourceUrl || !description.trim()) {
+    if (
+      !siteUrl ||
+      !imageUrl ||
+      !sourceUrl ||
+      !description.trim() ||
+      !projectName.trim()
+    ) {
       setMessage("Please fill in all fields!");
       return;
     }
-
     if (description.length > DESCRIPTION_LIMIT) {
       setMessage(
         `Description can not be greater than ${DESCRIPTION_LIMIT} characters.`
@@ -106,6 +112,7 @@ export default function SubmissionForm({ user }) {
           siteUrl: sanitizedSiteUrl,
           imageUrl,
           sourceUrl,
+          projectName,
           description,
           hackatime: {
             totalTime: selectedTotalTime,
@@ -267,6 +274,30 @@ export default function SubmissionForm({ user }) {
         >
           {description.length}/{DESCRIPTION_LIMIT} characters
         </div>
+      </div>
+
+      <div style={{ marginBottom: "1rem" }}>
+        <label
+          htmlFor="projectName"
+          style={{ display: "block", fontWeight: "bold" }}
+        >
+          Project Name
+        </label>
+        <input
+          id="projectName"
+          value={projectName}
+          onChange={(e) => setProjectName(e.target.value)}
+          required
+          maxLength={60}
+          placeholder="Enter your project name"
+          style={{
+            width: "100%",
+            padding: "0.5rem",
+            marginBottom: "1rem",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+          }}
+        />
       </div>
 
       {projects.length > 0 && (

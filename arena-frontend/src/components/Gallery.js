@@ -42,11 +42,42 @@ export default function Gallery({
         {submissions.map((s) => (
           <div key={s._id} className="vote-card" style={{ width: 280 }}>
             <img src={s.imageUrl} alt="preview" className="vote-image" />
-            <div className="vote-user">
+            {/* Project Name - bigger and prominent */}
+            <div
+              style={{
+                fontWeight: "bold",
+                fontSize: "1.35em",
+                margin: "0.7rem 0 0 0",
+                color: "#2d1c0b",
+                letterSpacing: "0.01em",
+              }}
+            >
+              {s.projectName}
+            </div>
+            {/* Submitter avatar and name - smaller and subtle */}
+            <div
+              className="vote-user"
+              style={{
+                fontWeight: "normal",
+                fontSize: "0.95em",
+                color: "#7d6b5a",
+                marginTop: "0.1rem",
+                marginBottom: "0.2rem",
+                justifyContent: "flex-start",
+                gap: "0.3rem",
+              }}
+            >
               <img
                 src={s.user?.avatar}
                 alt={s.user?.name || "Anonymous"}
                 className="user-avatar"
+                style={{
+                  width: 22,
+                  height: 22,
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  border: "1px solid #ccc",
+                }}
                 onError={(e) => (e.target.src = defaultAvatar)}
               />
               <span>{s.user?.name || "Anonymous"}</span>
@@ -82,6 +113,7 @@ export default function Gallery({
                   padding: "0.5em",
                   minHeight: "2.5em",
                   wordBreak: "break-word",
+                  textAlign: "left",
                 }}
               >
                 <b>Description:</b> {s.description}

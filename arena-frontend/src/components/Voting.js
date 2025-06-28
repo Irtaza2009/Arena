@@ -118,16 +118,46 @@ export default function Voting({ user }) {
         {pair.map((s) => (
           <div key={s._id} className="vote-card">
             <img src={s.imageUrl} alt="preview" className="vote-image" />
-            <div className="vote-user">
+            {/* Project Name - bigger and prominent */}
+            <div
+              style={{
+                fontWeight: "bold",
+                fontSize: "1.35em",
+                margin: "0.7rem 0 0 0",
+                color: "#2d1c0b",
+                letterSpacing: "0.01em",
+              }}
+            >
+              {s.projectName}
+            </div>
+            <div
+              className="vote-user"
+              style={{
+                fontWeight: "normal",
+                fontSize: "0.95em",
+                color: "#7d6b5a",
+                marginTop: "0.1rem",
+                marginBottom: "0.2rem",
+                justifyContent: "flex-start",
+                gap: "0.3rem",
+              }}
+            >
               <img
                 src={s.user.avatar}
                 alt={`${s.user.name}'s avatar`}
                 className="user-avatar"
+                style={{
+                  width: 22,
+                  height: 22,
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  border: "1px solid #ccc",
+                }}
                 onError={(e) => (e.target.src = defaultAvatar)}
               />
               <span>{s.user.name}</span>
             </div>
-            <p>
+            <div style={{ margin: "0.5rem 0" }}>
               <a
                 href={s.siteUrl}
                 target="_blank"
@@ -149,7 +179,7 @@ export default function Voting({ user }) {
                   View Source
                 </a>
               )}
-            </p>
+            </div>
             {s.description && (
               <div
                 style={{
@@ -161,6 +191,7 @@ export default function Voting({ user }) {
                   padding: "0.5em",
                   minHeight: "2.5em",
                   wordBreak: "break-word",
+                  textAlign: "left",
                 }}
               >
                 <b>Description:</b> {s.description}
