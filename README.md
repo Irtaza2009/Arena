@@ -4,6 +4,17 @@
 
 A project submission and voting platform for events hosted by the Special Activities Division (SAD), Hack Club!
 
+## Features
+
+- **Slack Authentication:** Secure login using Slack accounts.
+- **Project Submission:** Submit your project with demo URL, source code, image, project name, and description.
+- **Image Preview:** See a live preview of your project image before submitting.
+- **HackaTime Integration:** Optionally link your HackaTime projects and display total time spent.
+- **Project Gallery:** Browse all submitted projects in a clean, card-based gallery.
+- **Voting System:** Vote for your favorite projects in multiple categories (Creativity, Fun, Accessibility).
+- **Admin Live Leaderboard:** To view real-time results of the voting process.
+- **Admin Panel:** For viewing submissions, users, and analytics.
+
 ## Credits
 
 [CSS Sword](https://codepen.io/judag/full/VrpywV/)
