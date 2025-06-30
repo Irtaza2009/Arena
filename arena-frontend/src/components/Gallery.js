@@ -42,7 +42,6 @@ export default function Gallery({
         {submissions.map((s) => (
           <div key={s._id} className="vote-card" style={{ width: 280 }}>
             <img src={s.imageUrl} alt="preview" className="vote-image" />
-            {/* Project Name - bigger and prominent */}
             <div
               style={{
                 fontWeight: "bold",
@@ -54,7 +53,6 @@ export default function Gallery({
             >
               {s.projectName}
             </div>
-            {/* Submitter avatar and name - smaller and subtle */}
             <div
               className="vote-user"
               style={{

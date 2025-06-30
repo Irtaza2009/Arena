@@ -118,7 +118,6 @@ export default function Voting({ user }) {
         {pair.map((s) => (
           <div key={s._id} className="vote-card">
             <img src={s.imageUrl} alt="preview" className="vote-image" />
-            {/* Project Name - bigger and prominent */}
             <div
               style={{
                 fontWeight: "bold",
