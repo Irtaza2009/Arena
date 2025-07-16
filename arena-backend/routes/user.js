@@ -41,12 +41,7 @@ router.post("/submit", auth, async (req, res) => {
 });
 
 router.get("/submissions", auth, async (req, res) => {
-  if (!req.user.hasSubmitted) {
-    return res.status(403).json({ message: "Submit first to view!" });
-  }
-
-  // Exclude the user's own submission(s)
-  const submissions = await Submission.find({ user: { $ne: req.user._id } })
+  const submissions = await Submission.find()
     .populate("user", "name avatar")
     .select("-__v");
 
@@ -78,15 +73,14 @@ router.post("/vote", auth, async (req, res) => {
 
   // Validate voting token
   const votingToken = await VotingToken.findOne({ token, user: req.user._id });
-  if (
-    !votingToken ||
-    votingToken.expires < Date.now()
-  ) {
-    return res.status(400).json({ message: "Invalid or expired voting token." });
+  if (!votingToken || votingToken.expires < Date.now()) {
+    return res
+      .status(400)
+      .json({ message: "Invalid or expired voting token." });
   }
 
   // Validate voted IDs match assigned pair
-  const assignedIds = votingToken.pair.map(id => id.toString());
+  const assignedIds = votingToken.pair.map((id) => id.toString());
   const votedIds = [
     funWinnerId,
     funLoserId,
@@ -94,10 +88,14 @@ router.post("/vote", auth, async (req, res) => {
     creativityLoserId,
     accessibilityWinnerId,
     accessibilityLoserId,
-  ].map(id => id && id.toString()).filter(Boolean);
+  ]
+    .map((id) => id && id.toString())
+    .filter(Boolean);
 
-  if (!votedIds.every(id => assignedIds.includes(id))) {
-    return res.status(400).json({ message: "Vote does not match assigned pair." });
+  if (!votedIds.every((id) => assignedIds.includes(id))) {
+    return res
+      .status(400)
+      .json({ message: "Vote does not match assigned pair." });
   }
 
   // Invalidate token after use
