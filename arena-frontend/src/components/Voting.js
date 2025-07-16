@@ -18,18 +18,36 @@ export default function Voting({ user }) {
   const [startTime, setStartTime] = useState(Date.now());
   const [voteStatus, setVoteStatus] = useState("idle"); // idle | loading | success
   const [voteCount, setVoteCount] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   // Fetch voting pair from backend
   const fetchPair = async () => {
-    const res = await axios.get(
-      "https://arena-backend.irtaza.xyz/api/voting-pair",
-      { withCredentials: true }
-    );
-    setPair(res.data.pair);
-    setToken(res.data.token);
-    setSelectedVotes({ fun: null, creativity: null, accessibility: null });
-    setVisitedSites({});
-    setStartTime(Date.now());
+    setErrorMessage(null);
+    try {
+      const res = await axios.get(
+        "https://arena-backend.irtaza.xyz/api/voting-pair",
+        { withCredentials: true }
+      );
+      setPair(res.data.pair);
+      setToken(res.data.token);
+      setSelectedVotes({ fun: null, creativity: null, accessibility: null });
+      setVisitedSites({});
+      setStartTime(Date.now());
+    } catch (err) {
+      const msg =
+        err.response?.data?.message ||
+        "Something went wrong. Please try again later.";
+      if (
+        msg === "No new pairs left to vote on!" ||
+        msg === "Not enough submissions to vote."
+      ) {
+        setErrorMessage(msg);
+      } else {
+        setErrorMessage("Something went wrong. Please try again later.");
+      }
+      setPair([]);
+      setToken(null);
+    }
   };
 
   useEffect(() => {
@@ -99,6 +117,14 @@ export default function Voting({ user }) {
       <div className="vote-wrapper">
         <h2 className="vote-title">You've used all 3 of your votes 🎉</h2>
         <p className="vote-subheading">Thanks for participating!</p>
+      </div>
+    );
+  }
+
+  if (errorMessage) {
+    return (
+      <div className="vote-wrapper">
+        <p className="cottage-text error">{errorMessage}</p>
       </div>
     );
   }
