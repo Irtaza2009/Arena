@@ -90,8 +90,8 @@ function App() {
         <SubmissionForm user={user} />
       ) : (
         //<Submitted lockedType="submission" />
-        <Voting user={user} />
-        //<Submitted lockedType="voting" />
+        //<Voting user={user} />
+        <Submitted lockedType="voting" />
       )}
       <LeaderboardManager />
       <footer className="footer-signout">
