@@ -4,6 +4,7 @@ const Submission = require("../models/Submission");
 const User = require("../models/User");
 const Vote = require("../models/Vote");
 const ResetLog = require("../models/ResetLog");
+const auth = require("../middleware/auth");
 
 router.get("/leaderboard", async (req, res) => {
   try {
@@ -137,7 +138,7 @@ router.get("/leaderboard", async (req, res) => {
   }
 });
 
-router.post("/reset", async (req, res) => {
+router.post("/reset", auth, async (req, res) => {
   const clientSecret = req.headers["x-admin-secret"];
   if (!clientSecret || clientSecret !== process.env.ADMIN_SECRET) {
     return res.status(403).json({ message: "Unauthorized" });
@@ -148,13 +149,16 @@ router.post("/reset", async (req, res) => {
     await Vote.deleteMany({});
     await User.updateMany({}, { hasSubmitted: false, votes: 0 });
 
+    // Reset seenPairs for all users
+    await User.updateMany({}, { $set: { seenPairs: [] } });
+
     await ResetLog.create({
       performedBy: "admin", // hard coding this to 'admin' for now
       ip: req.ip,
       note: "Manual reset from leaderboard UI",
     });
 
-    res.json({ message: "Reset successful" });
+    res.json({ message: "All data reset!" });
   } catch (err) {
     console.error("Reset error:", err);
     res.status(500).json({ message: "Reset failed" });
