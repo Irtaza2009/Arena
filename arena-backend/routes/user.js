@@ -1,6 +1,8 @@
 const express = require("express");
 const auth = require("../middleware/authMiddleware");
 const router = express.Router();
+const { v4: uuidv4 } = require("uuid");
+const VotingToken = require("../models/VotingToken");
 
 router.get("/me", auth, async (req, res) => {
   const user = req.user;
@@ -57,6 +59,7 @@ router.get("/user-votes", auth, async (req, res) => {
 
 router.post("/vote", auth, async (req, res) => {
   const {
+    token,
     funWinnerId,
     funLoserId,
     creativityWinnerId,
@@ -65,6 +68,40 @@ router.post("/vote", auth, async (req, res) => {
     accessibilityLoserId,
     startTime,
   } = req.body;
+
+  // Enforce max 3 votes per user
+  if ((req.user.votes || 0) >= 3) {
+    return res
+      .status(403)
+      .json({ message: "You have reached your voting limit." });
+  }
+
+  // Validate voting token
+  const votingToken = await VotingToken.findOne({ token, user: req.user._id });
+  if (
+    !votingToken ||
+    votingToken.expires < Date.now()
+  ) {
+    return res.status(400).json({ message: "Invalid or expired voting token." });
+  }
+
+  // Validate voted IDs match assigned pair
+  const assignedIds = votingToken.pair.map(id => id.toString());
+  const votedIds = [
+    funWinnerId,
+    funLoserId,
+    creativityWinnerId,
+    creativityLoserId,
+    accessibilityWinnerId,
+    accessibilityLoserId,
+  ].map(id => id && id.toString()).filter(Boolean);
+
+  if (!votedIds.every(id => assignedIds.includes(id))) {
+    return res.status(400).json({ message: "Vote does not match assigned pair." });
+  }
+
+  // Invalidate token after use
+  await VotingToken.deleteOne({ token });
 
   const endTime = Date.now();
   const timeTaken = endTime - startTime;
@@ -134,6 +171,32 @@ router.post("/vote", auth, async (req, res) => {
   await req.user.save();
 
   res.send("Vote recorded for all categories.");
+});
+
+router.get("/voting-pair", auth, async (req, res) => {
+  // Get all submissions except the user's own
+  const submissions = await Submission.find({ user: { $ne: req.user._id } })
+    .populate("user", "name avatar")
+    .select("-__v");
+
+  if (submissions.length < 2) {
+    return res.status(400).json({ message: "Not enough submissions to vote." });
+  }
+
+  // Pick two random submissions
+  const shuffled = submissions.sort(() => 0.5 - Math.random());
+  const pair = [shuffled[0], shuffled[1]];
+  const token = uuidv4();
+
+  // Store token and assigned pair for this user (expires in 10 min)
+  await VotingToken.create({
+    token,
+    user: req.user._id,
+    pair: [pair[0]._id, pair[1]._id],
+    expires: new Date(Date.now() + 10 * 60 * 1000),
+  });
+
+  res.json({ pair, token });
 });
 
 module.exports = router;
