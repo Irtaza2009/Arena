@@ -3,6 +3,7 @@ const auth = require("../middleware/authMiddleware");
 const router = express.Router();
 const { v4: uuidv4 } = require("uuid");
 const VotingToken = require("../models/VotingToken");
+const User = require("../models/User");
 
 router.get("/me", auth, async (req, res) => {
   const user = req.user;
@@ -168,6 +169,13 @@ router.post("/vote", auth, async (req, res) => {
   req.user.votes = (req.user.votes || 0) + 1;
   await req.user.save();
 
+  const pairKey = [votingToken.pair[0].toString(), votingToken.pair[1].toString()].sort().join("_");
+  if (!req.user.seenPairs) req.user.seenPairs = [];
+  if (!req.user.seenPairs.includes(pairKey)) {
+    req.user.seenPairs.push(pairKey);
+    await req.user.save();
+  }
+
   res.send("Vote recorded for all categories.");
 });
 
@@ -181,20 +189,45 @@ router.get("/voting-pair", auth, async (req, res) => {
     return res.status(400).json({ message: "Not enough submissions to vote." });
   }
 
-  // Pick two random submissions
-  const shuffled = submissions.sort(() => 0.5 - Math.random());
-  const pair = [shuffled[0], shuffled[1]];
+  // Build all possible pairs
+  const allPairs = [];
+  for (let i = 0; i < submissions.length; i++) {
+    for (let j = i + 1; j < submissions.length; j++) {
+      allPairs.push([submissions[i], submissions[j]]);
+    }
+  }
+
+  // Get seen pairs from user (as sorted string keys)
+  const user = await User.findById(req.user._id);
+  const seenPairs = user.seenPairs || [];
+
+  // Helper to create a unique key for a pair (sorted IDs)
+  const pairKey = (a, b) =>
+    [a._id.toString(), b._id.toString()].sort().join("_");
+
+  // Filter out seen pairs
+  const unseenPairs = allPairs.filter(
+    ([a, b]) => !seenPairs.includes(pairKey(a, b))
+  );
+
+  if (unseenPairs.length === 0) {
+    return res.status(400).json({ message: "No new pairs left to vote on!" });
+  }
+
+  // Pick a random unseen pair
+  const randomPair =
+    unseenPairs[Math.floor(Math.random() * unseenPairs.length)];
   const token = uuidv4();
 
   // Store token and assigned pair for this user (expires in 10 min)
   await VotingToken.create({
     token,
     user: req.user._id,
-    pair: [pair[0]._id, pair[1]._id],
+    pair: [randomPair[0]._id, randomPair[1]._id],
     expires: new Date(Date.now() + 10 * 60 * 1000),
   });
 
-  res.json({ pair, token });
+  res.json({ pair: randomPair, token });
 });
 
 module.exports = router;
