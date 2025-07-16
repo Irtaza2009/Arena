@@ -205,7 +205,7 @@ const Leaderboard = ({ onClose }) => {
         {},
         {
           headers: {
-            "x-admin-secret": secretR,
+            "x-admin-secret": secret,
             withCredentials: true,
           },
         }
