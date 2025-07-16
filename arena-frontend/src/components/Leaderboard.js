@@ -422,15 +422,15 @@ export const LeaderboardManager = () => {
 };
 
 const ResetConfirmationModal = ({ onConfirm, onCancel }) => {
-  const [secret, setSecret] = useState("");
+  const [secretR, setSecretR] = useState("");
   const [error, setError] = useState("");
 
   const handleConfirm = () => {
-    if (!secret.trim()) {
+    if (!secretR.trim()) {
       setError("Secret is required.");
       return;
     }
-    onConfirm(secret);
+    onConfirm(secretR);
   };
 
   return (
@@ -448,8 +448,8 @@ const ResetConfirmationModal = ({ onConfirm, onCancel }) => {
         <label>Re-enter Admin Secret to Confirm:</label>
         <input
           type="password"
-          value={secret}
-          onChange={(e) => setSecret(e.target.value)}
+          value={secretR}
+          onChange={(e) => setSecretR(e.target.value)}
           placeholder="Secret key..."
         />
         {error && <p className="error">{error}</p>}

@@ -140,7 +140,7 @@ router.get("/leaderboard", async (req, res) => {
 
 router.post("/reset", auth, async (req, res) => {
   const clientSecret = req.headers["x-admin-secret"];
-  if (!clientSecret || clientSecret !== process.env.ADMIN_SECRET) {
+  if (!clientSecret || clientSecret !== process.env.ADMIN_SECRET_RESET) {
     return res.status(403).json({ message: "Unauthorized" });
   }
 
