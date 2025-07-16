@@ -4,7 +4,7 @@ const Submission = require("../models/Submission");
 const User = require("../models/User");
 const Vote = require("../models/Vote");
 const ResetLog = require("../models/ResetLog");
-const auth = require("../middleware/auth");
+const auth = require("../middleware/authMiddleware");
 
 router.get("/leaderboard", async (req, res) => {
   try {
