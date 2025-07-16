@@ -4,7 +4,6 @@ const Submission = require("../models/Submission");
 const User = require("../models/User");
 const Vote = require("../models/Vote");
 const ResetLog = require("../models/ResetLog");
-const auth = require("../middleware/authMiddleware");
 
 router.get("/leaderboard", async (req, res) => {
   try {
@@ -138,9 +137,9 @@ router.get("/leaderboard", async (req, res) => {
   }
 });
 
-router.post("/reset", auth, async (req, res) => {
+router.post("/reset", async (req, res) => {
   const clientSecret = req.headers["x-admin-secret"];
-  if (!clientSecret || clientSecret !== process.env.ADMIN_SECRET_RESET) {
+  if (!clientSecret || clientSecret !== process.env.ADMIN_SECRET) {
     return res.status(403).json({ message: "Unauthorized" });
   }
 
