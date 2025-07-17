@@ -107,7 +107,7 @@ export default function SubmissionForm({ user }) {
       const sanitizedSiteUrl = sanitizeUrl(siteUrl);
 
       await axios.post(
-        "https://arena-backend.irtaza.xyz/api/submit",
+        "https://backend.arena.hackclub.com/api/submit",
         {
           siteUrl: sanitizedSiteUrl,
           imageUrl,

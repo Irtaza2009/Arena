@@ -18,7 +18,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("https://arena-backend.irtaza.xyz/api/me", {
+      .get("https://backend.arena.hackclub.com/api/me", {
         withCredentials: true,
       })
       .then((res) => {
@@ -41,7 +41,7 @@ function App() {
   const handleSignOut = () => {
     axios
       .post(
-        "https://arena-backend.irtaza.xyz/auth/logout",
+        "https://backend.arena.hackclub.com/auth/logout",
         {},
         { withCredentials: true }
       )

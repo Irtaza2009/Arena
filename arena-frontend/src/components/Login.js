@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Login() {
   const login = () => {
-    window.location.href = "https://arena-backend.irtaza.xyz/auth/slack"; // for prod:
+    window.location.href = "https://backend.arena.hackclub.com/auth/slack"; // for prod:
     //window.location.href = "http://localhost:5000/auth/slack"; // for dev
   };
 

@@ -20,7 +20,7 @@ const Leaderboard = ({ onClose }) => {
       try {
         const adminSecret = localStorage.getItem("adminSecret");
         const response = await axios.get(
-          "https://arena-backend.irtaza.xyz/admin/leaderboard",
+          "https://backend.arena.hackclub.com/admin/leaderboard",
           {
             headers: {
               "x-admin-secret": adminSecret,
@@ -201,7 +201,7 @@ const Leaderboard = ({ onClose }) => {
   const handleResetConfirm = async (secret) => {
     try {
       const res = await axios.post(
-        "https://arena-backend.irtaza.xyz/admin/reset",
+        "https://backend.arena.hackclub.com/admin/reset",
         {},
         {
           headers: {
@@ -318,7 +318,7 @@ const AdminGate = ({ onSuccess }) => {
   const verifyAdminSecret = async (secret) => {
     try {
       const response = await axios.get(
-        "https://arena-backend.irtaza.xyz/admin/leaderboard",
+        "https://backend.arena.hackclub.com/admin/leaderboard",
         {
           headers: { "x-admin-secret": secret },
           validateStatus: () => true, // Don't throw on 403
@@ -364,7 +364,7 @@ export const LeaderboardManager = () => {
       if (storedSecret) {
         try {
           const isValid = await axios.get(
-            "https://arena-backend.irtaza.xyz/admin/leaderboard",
+            "https://backend.arena.hackclub.com/admin/leaderboard",
             {
               headers: { "x-admin-secret": storedSecret },
               validateStatus: () => true,

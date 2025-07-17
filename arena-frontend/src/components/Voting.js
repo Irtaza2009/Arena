@@ -31,7 +31,7 @@ export default function Voting({ user }) {
     setErrorMessage(null);
     try {
       const res = await axios.get(
-        "https://arena-backend.irtaza.xyz/api/voting-pair",
+        "https://backend.arena.hackclub.com/api/voting-pair",
         { withCredentials: true }
       );
       setPair(res.data.pair);
@@ -59,7 +59,7 @@ export default function Voting({ user }) {
   useEffect(() => {
     fetchPair();
     axios
-      .get("https://arena-backend.irtaza.xyz/api/user-votes", {
+      .get("https://backend.arena.hackclub.com/api/user-votes", {
         withCredentials: true,
       })
       .then((res) => setVoteCount(res.data.count))
@@ -78,7 +78,7 @@ export default function Voting({ user }) {
     setVoteStatus("loading");
     try {
       await axios.post(
-        "https://arena-backend.irtaza.xyz/api/vote",
+        "https://backend.arena.hackclub.com/api/vote",
         {
           token,
           funWinnerId: selectedVotes.fun?.winnerId,
