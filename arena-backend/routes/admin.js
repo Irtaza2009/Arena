@@ -137,7 +137,7 @@ router.get("/leaderboard", async (req, res) => {
   }
 });
 
-router.post("/reset", async (req, res) => {
+/*router.post("/reset", async (req, res) => {
   const clientSecret = req.headers["x-admin-secret"];
   if (!clientSecret || clientSecret !== process.env.ADMIN_SECRET) {
     return res.status(403).json({ message: "Unauthorized" });
@@ -162,6 +162,7 @@ router.post("/reset", async (req, res) => {
     console.error("Reset error:", err);
     res.status(500).json({ message: "Reset failed" });
   }
-});
+}); 
+*/
 
 module.exports = router;
