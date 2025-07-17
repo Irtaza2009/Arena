@@ -18,7 +18,11 @@ const app = express();
 // CORS config
 app.use(
   cors({
-    origin: ["https://arena.irtaza.xyz", "http://localhost:3000"],
+    origin: [
+      "https://arena.hackclub.com",
+      "https://arena.irtaza.xyz",
+      "http://localhost:3000",
+    ],
     credentials: true,
   })
 );

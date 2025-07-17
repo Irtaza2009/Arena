@@ -72,7 +72,7 @@ router.get("/slack/callback", async (req, res) => {
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
 
-    res.redirect("https://arena.irtaza.xyz/"); // redirect to frontend
+    res.redirect("https://arena.hackclub.com/"); // redirect to frontend
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Slack authentication failed");
