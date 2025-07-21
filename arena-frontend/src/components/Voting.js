@@ -118,10 +118,10 @@ export default function Voting({ user }) {
     selectedVotes.accessibility;
   const bothSitesVisited = pair.every((s) => visitedSites[s._id]);
 
-  if (voteCount >= 3) {
+  if (voteCount >= 10) {
     return (
       <div className="vote-wrapper">
-        <h2 className="vote-title">You've used all 3 of your votes 🎉</h2>
+        <h2 className="vote-title">You've used all 10 of your votes 🎉</h2>
         <p className="vote-subheading">Thanks for participating!</p>
       </div>
     );
@@ -148,7 +148,7 @@ export default function Voting({ user }) {
       <h2 className="vote-title">Vote for your Favourite Submission</h2>
       {voteCount !== null && (
         <p className="vote-subheading">
-          You have <b>{Math.max(3 - voteCount, 0)}</b> votes left.
+          You have <b>{Math.max(10 - voteCount, 0)}</b> votes left.
         </p>
       )}
 

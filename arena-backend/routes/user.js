@@ -65,8 +65,8 @@ router.post("/vote", auth, async (req, res) => {
     startTime,
   } = req.body;
 
-  // Enforce max 3 votes per user
-  if ((req.user.votes || 0) >= 3) {
+  // Enforce max 10 votes per user
+  if ((req.user.votes || 0) >= 10) {
     return res
       .status(403)
       .json({ message: "You have reached your voting limit." });
@@ -169,7 +169,12 @@ router.post("/vote", auth, async (req, res) => {
   req.user.votes = (req.user.votes || 0) + 1;
   await req.user.save();
 
-  const pairKey = [votingToken.pair[0].toString(), votingToken.pair[1].toString()].sort().join("_");
+  const pairKey = [
+    votingToken.pair[0].toString(),
+    votingToken.pair[1].toString(),
+  ]
+    .sort()
+    .join("_");
   if (!req.user.seenPairs) req.user.seenPairs = [];
   if (!req.user.seenPairs.includes(pairKey)) {
     req.user.seenPairs.push(pairKey);
