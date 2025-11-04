@@ -29,7 +29,7 @@ export default function Gallery({
   return (
     <div style={{ padding: "1rem" }}>
       <h2 style={{ textAlign: "center", marginBottom: "2rem" }}>
-        Project Gallery
+        Gallery
       </h2>
       <div
         style={{
@@ -87,9 +87,9 @@ export default function Gallery({
                 rel="noreferrer"
                 className="vote-link"
               >
-                Visit Site
+                View Image
               </a>
-              {s.sourceUrl && (
+            {/* {s.sourceUrl && (
                 <a
                   href={s.sourceUrl}
                   target="_blank"
@@ -99,6 +99,7 @@ export default function Gallery({
                   View Source
                 </a>
               )}
+                */}
             </div>
             {s.description && (
               <div
@@ -117,11 +118,12 @@ export default function Gallery({
                 <b>Description:</b> {s.description}
               </div>
             )}
-            {s.hackatime?.totalTime && (
+           {/* {s.hackatime?.totalTime && (
               <div style={{ fontSize: "0.95em", marginTop: "0.5em" }}>
                 <b>HackaTime:</b> {s.hackatime.totalTime}
               </div>
             )}
+              */}
           </div>
         ))}
       </div>

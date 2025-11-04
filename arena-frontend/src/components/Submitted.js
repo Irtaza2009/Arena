@@ -8,7 +8,7 @@ export default function Submitted({ lockedType = "voting" }) {
         <>
           <h1 className="submitted-title">🎉 Submission Received!</h1>
           <p className="cottage-text">
-            Thank you for submitting your project. Your entry has been
+            Thank you for submitting. Your entry has been
             successfully recorded.
           </p>
         </>

@@ -9,7 +9,7 @@ const defaultAvatar =
 const CATEGORY_LABELS = {
   creativity: "Use of Theme",
   fun: "Fun",
-  accessibility: "Technical Execution",
+  accessibility: "Creativity",
 };
 
 export default function Voting({ user }) {
@@ -206,6 +206,7 @@ export default function Voting({ user }) {
               >
                 Visit
               </a>
+              {/*
               {s.sourceUrl && (
                 <a
                   href={s.sourceUrl}
@@ -216,6 +217,7 @@ export default function Voting({ user }) {
                   View Source
                 </a>
               )}
+                */}
             </div>
             {s.description && (
               <div

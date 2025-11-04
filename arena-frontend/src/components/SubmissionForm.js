@@ -70,7 +70,7 @@ export default function SubmissionForm({ user }) {
     if (
       !siteUrl ||
       !imageUrl ||
-      !sourceUrl ||
+      // !sourceUrl ||
       !description.trim() ||
       !projectName.trim()
     ) {
@@ -96,10 +96,11 @@ export default function SubmissionForm({ user }) {
       return;
     }
 
-    if (!isValidUrl(sourceUrl)) {
+   /* if (!isValidUrl(sourceUrl)) {
       setMessage("Invalid source code URL. Please provide a valid URL.");
       return;
     }
+      */
 
     setLoading(true);
     setMessage("");
@@ -111,17 +112,17 @@ export default function SubmissionForm({ user }) {
         {
           siteUrl: sanitizedSiteUrl,
           imageUrl,
-          sourceUrl,
+          //sourceUrl,
           projectName,
           description,
-          hackatime: {
+         /*hackatime: {
             totalTime: selectedTotalTime,
             projects: selectedProjects.map((p) => ({
               name: p.name,
               text: p.text,
               total_seconds: p.total_seconds,
             })),
-          },
+          }*/
         },
         { withCredentials: true }
       );
@@ -156,14 +157,14 @@ export default function SubmissionForm({ user }) {
 
   return (
     <div style={{ padding: "2rem", maxWidth: "500px", margin: "0 auto" }}>
-      <h2>Submit Your Project</h2>
+      <h2>Submit Your Art Piece</h2>
 
       <div style={{ marginBottom: "1rem" }}>
         <label
           htmlFor="siteUrl"
           style={{ display: "block", fontWeight: "bold" }}
         >
-          Demo URL
+          Image URL
         </label>
         <input
           id="siteUrl"
@@ -180,7 +181,7 @@ export default function SubmissionForm({ user }) {
         />
       </div>
 
-      <div style={{ marginBottom: "1rem" }}>
+     {/* <div style={{ marginBottom: "1rem" }}>
         <label
           htmlFor="sourceUrl"
           style={{ display: "block", fontWeight: "bold" }}
@@ -201,13 +202,14 @@ export default function SubmissionForm({ user }) {
           }}
         />
       </div>
+      */}
 
       <div style={{ marginBottom: "1rem" }}>
         <label
           htmlFor="imageUrl"
           style={{ display: "block", fontWeight: "bold" }}
         >
-          Image URL
+          Image URL (again!)
         </label>
         <input
           id="imageUrl"
@@ -245,7 +247,7 @@ export default function SubmissionForm({ user }) {
           htmlFor="description"
           style={{ display: "block", fontWeight: "bold" }}
         >
-          Project Description
+          Description
         </label>
         <textarea
           id="description"
@@ -281,7 +283,7 @@ export default function SubmissionForm({ user }) {
           htmlFor="projectName"
           style={{ display: "block", fontWeight: "bold" }}
         >
-          Project Name
+          Name
         </label>
         <input
           id="projectName"
@@ -300,7 +302,7 @@ export default function SubmissionForm({ user }) {
         />
       </div>
 
-      {projects.length > 0 && (
+     {/* {projects.length > 0 && (
         <div style={{ marginBottom: "1rem" }}>
           <label htmlFor="hackatime-projects" style={{ fontWeight: "bold" }}>
             Link Hackatime Projects (optional)
@@ -333,8 +335,9 @@ export default function SubmissionForm({ user }) {
               </option>
             ))}
           </select>
-
+*/}
           {/* Show selected project "pills" */}
+          {/*
           {selectedProjects.length > 0 && (
             <div
               style={{
@@ -384,6 +387,7 @@ export default function SubmissionForm({ user }) {
           )}
         </div>
       )}
+      */}
 
       <button
         onClick={submit}
