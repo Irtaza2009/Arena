@@ -51,7 +51,7 @@ export default function ColorWheel({ onAssign }) {
       try {
         
         await axios.post(
-          "https://backend.arena.hackclub.com/api/user/color",
+          "https://backend.arena.hackclub.com/api/color",
           { color },
           { withCredentials: true }
         );
