@@ -7,6 +7,7 @@ import Submitted from "./components/Submitted";
 import { LeaderboardManager } from "./components/Leaderboard";
 import SwordLoader from "./components/SwordLoader";
 import Gallery from "./components/Gallery";
+import ColorWheel from "./components/ColorWheel"; // added
 
 import "./App.css";
 
@@ -50,8 +51,36 @@ function App() {
       });
   };
 
+  // callback for color assigned by ColorWheel
+  const handleColorAssigned = (colorHex) => {
+    // update local user state so UI updates immediately
+    setUser((u) => (u ? { ...u, color: colorHex } : u));
+  };
+
   return (
     <div className="App">
+      {/* show the small color badge at top-left when the user has a color */}
+      {user && user.color && (
+        <div
+          title={`Your color: ${user.color}`}
+          style={{
+            position: "fixed",
+            top: 8,
+            left: 8,
+            width: 22,
+            height: 22,
+            borderRadius: "50%",
+            background: user.color,
+            border: "2px solid #fff",
+            boxShadow: "0 1px 4px rgba(0,0,0,0.3)",
+            zIndex: 9998,
+          }}
+        />
+      )}
+
+      {/* show the wheel once when user is present and has no color */}
+      {user && !user.color && <ColorWheel onAssign={handleColorAssigned} />}
+
       {/* Tabs - only show if signed in */}
       {user && (
         <div

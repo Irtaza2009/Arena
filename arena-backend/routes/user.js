@@ -235,4 +235,38 @@ router.get("/voting-pair", auth, async (req, res) => {
   res.json({ pair: randomPair, token });
 });
 
+router.post("/color", async (req, res) => {
+  const user = req.user;
+  if (!user) {
+    return res.status(401).json({ error: "Not authenticated" });
+  }
+
+  const { color } = req.body;
+
+  // Basic validation of color format (hex)
+  if (!color || typeof color !== "string" || !/^#([0-9A-F]{3}){1,2}$/i.test(color)) {
+    return res.status(400).json({ error: "Invalid color" });
+  }
+
+  try {
+    user.color = color;
+    await user.save();
+
+    return res.json({
+      success: true,
+      user: {
+        _id: user._id,
+        name: user.name,
+        avatar: user.avatar,
+        color: user.color,
+        hasSubmitted: user.hasSubmitted,
+        votes: user.votes,
+      },
+    });
+  } catch (err) {
+    console.error("Failed to update user color:", err);
+    return res.status(500).json({ error: "Failed to update color" });
+  }
+});
+
 module.exports = router;

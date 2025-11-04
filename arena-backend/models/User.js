@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   hasSubmitted: { type: Boolean, default: false },
   votes: { type: Number, default: 0 },
   seenPairs: [{ type: String }],
+  color: { type: String, default: null }, // color property (ROYGBIV hex stored)
 });
 
 module.exports = mongoose.model("User", userSchema);
