@@ -18,11 +18,19 @@ export default function ColorWheel({ onAssign }) {
   const [beePosition, setBeePosition] = useState({ x: 0, y: 0 });
   const [targetColor, setTargetColor] = useState(null);
 
-  // Calculate positions for each color segment - moved more towards middle
+  // Calculate positions for each color segment - with random offset within segment
   const getColorPosition = (index) => {
     const segments = COLORS.length;
-    const radius = 50; // Reduced from 120 to move landing points more towards middle
-    const angle = (index * 360 / segments) - 90; // Start from top (-90deg)
+    const radius = 90;
+    
+    // Calculate the base angle for this segment
+    const segmentSize = 360 / segments; // 45 degrees per segment
+    const segmentStartAngle = (index * segmentSize) - 90; // Start from top
+    
+    // Add random offset within the segment (avoid edges)
+    const randomOffset = (Math.random() * segmentSize * 0.6) - (segmentSize * 0.3); // ±13.5 degrees from center
+    const angle = segmentStartAngle + randomOffset;
+    
     const radian = (angle * Math.PI) / 180;
     
     return {
@@ -189,7 +197,7 @@ export default function ColorWheel({ onAssign }) {
               opacity: flying ? 0.7 : 1,
             }}
           >
-            <div style={{ transform: 'translateY(15px)' }}>
+            <div style={{ transform: 'translateY(18px)' }}>
               {flying ? "Flying…" : "Click Bee!"}
             </div>
           </div>
