@@ -14,7 +14,7 @@ const COLORS = [
 
 export default function ColorWheel({ onAssign }) {
   const [flying, setFlying] = useState(false);
-  const [selected, setSelected] = useState(null);
+  // const [selected, setSelected] = useState(null);
   const [beePosition, setBeePosition] = useState({ x: 0, y: 0 });
   const [targetColor, setTargetColor] = useState(null);
 
@@ -74,7 +74,7 @@ export default function ColorWheel({ onAssign }) {
     setBeePosition(targetPos);
 
     const color = COLORS[chosenIndex].hex;
-    setSelected(chosenIndex);
+    // setSelected(chosenIndex);
 
     // Save color to backend
     try {

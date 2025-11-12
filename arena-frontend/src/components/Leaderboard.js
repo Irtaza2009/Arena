@@ -198,7 +198,7 @@ const Leaderboard = ({ onClose }) => {
 
   const [showResetModal, setShowResetModal] = useState(false);
 
-  const handleResetConfirm = async (secret) => {
+  /* const handleResetConfirm = async (secret) => {
     try {
       const res = await axios.post(
         "https://backend.arena.hackclub.com/admin/reset",
@@ -217,6 +217,7 @@ const Leaderboard = ({ onClose }) => {
       alert(err.response?.data?.message || "Reset failed. Check your secret.");
     }
   };
+  */
 
   return (
     <div className="leaderboard-modal">

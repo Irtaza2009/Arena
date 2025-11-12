@@ -25,19 +25,19 @@ function secondsToHuman(secs) {
 export default function SubmissionForm({ user }) {
   const [siteUrl, setSiteUrl] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [sourceUrl, setSourceUrl] = useState("");
+  // const [sourceUrl, setSourceUrl] = useState("");
   const [projectName, setProjectName] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
-  const [projects, setProjects] = useState([]);
+  //const [projects, setProjects] = useState([]);
   const [selectedProjects, setSelectedProjects] = useState([]);
   const [description, setDescription] = useState("");
   const DESCRIPTION_LIMIT = 100;
 
   useEffect(() => {
     if (!user?.slackId) return;
-    const fetchProjects = async () => {
+    /* const fetchProjects = async () => {
       try {
         const res = await axios.get(
           `https://hackatime.hackclub.com/api/v1/users/${user.slackId}/stats?start_date=2025-7-1&features=projects`
@@ -47,8 +47,8 @@ export default function SubmissionForm({ user }) {
         setProjects([]);
       }
     };
-    fetchProjects();
-  }, [user?.slackId]);
+    fetchProjects(); */
+  }, [user?.slackId]); 
 
   const sanitizeUrl = (url) => {
     // If the URL does not start with 'http://' or 'https://', add 'https://'
@@ -58,13 +58,14 @@ export default function SubmissionForm({ user }) {
     return url;
   };
 
-  const handleProjectChange = (e) => {
+  /* const handleProjectChange = (e) => {
     const options = Array.from(e.target.selectedOptions).map((o) => ({
       name: o.value,
       text: o.getAttribute("data-time"),
     }));
     setSelectedProjects(options);
   };
+  */
 
   const submit = async () => {
     if (
@@ -153,7 +154,7 @@ export default function SubmissionForm({ user }) {
     (sum, p) => sum + (p.total_seconds || 0),
     0
   );
-  const selectedTotalTime = secondsToHuman(selectedTotalSeconds);
+  //const selectedTotalTime = secondsToHuman(selectedTotalSeconds);
 
   return (
     <div style={{ padding: "2rem", maxWidth: "500px", margin: "0 auto" }}>
@@ -231,7 +232,7 @@ export default function SubmissionForm({ user }) {
           <h4>Image Preview</h4>
           <img
             src={imagePreview}
-            alt="Image Preview"
+            alt="Preview"
             style={{
               width: "100%",
               height: "180px",
