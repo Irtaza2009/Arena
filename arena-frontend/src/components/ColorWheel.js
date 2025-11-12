@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import beeImage from "../bumble_bee.png"
+import beeImage from "../BumbleBee.png";
 
 const COLORS = [
   { name: "Red", hex: "#FFB3B3" },      // pastel red
