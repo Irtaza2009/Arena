@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Login from "./components/Login";
 import SubmissionForm from "./components/SubmissionForm";
-import Voting from "./components/Voting";
-// import Submitted from "./components/Submitted";
+// import Voting from "./components/Voting";
+import Submitted from "./components/Submitted";
 import { LeaderboardManager } from "./components/Leaderboard";
 import SwordLoader from "./components/SwordLoader";
 import Gallery from "./components/Gallery";
@@ -119,8 +119,8 @@ function App() {
         <SubmissionForm user={user} />
       ) : (
         //<Submitted lockedType="submission" />
-        <Voting user={user} />
-        //<Submitted lockedType="voting" />
+        //<Voting user={user} />
+        <Submitted lockedType="voting" />
       )}
       <LeaderboardManager />
       <footer className="footer-signout">

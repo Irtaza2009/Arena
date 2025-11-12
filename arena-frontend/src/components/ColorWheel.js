@@ -21,7 +21,7 @@ export default function ColorWheel({ onAssign }) {
   // Calculate positions for each color segment - moved more towards middle
   const getColorPosition = (index) => {
     const segments = COLORS.length;
-    const radius = 80; // Reduced from 120 to move landing points more towards middle
+    const radius = 50; // Reduced from 120 to move landing points more towards middle
     const angle = (index * 360 / segments) - 90; // Start from top (-90deg)
     const radian = (angle * Math.PI) / 180;
     
@@ -40,7 +40,7 @@ export default function ColorWheel({ onAssign }) {
     setTargetColor(COLORS[chosenIndex]);
 
     // Reset bee to center (slightly higher position)
-    setBeePosition({ x: 0, y: -10 }); // Moved bee up by 10px
+    setBeePosition({ x: 0, y: -20 }); // Moved bee up by 20px
 
     // Small delay before starting flight
     await new Promise(resolve => setTimeout(resolve, 100));
@@ -64,7 +64,7 @@ export default function ColorWheel({ onAssign }) {
       
       setBeePosition({
         x: mainX + wobbleX,
-        y: mainY + wobbleY - 10 * (1 - progress) // Start from higher position
+        y: mainY + wobbleY - 20 * (1 - progress) // Start from higher position
       });
 
       await new Promise(resolve => setTimeout(resolve, stepTime));
@@ -189,7 +189,7 @@ export default function ColorWheel({ onAssign }) {
               opacity: flying ? 0.7 : 1,
             }}
           >
-            <div style={{ transform: 'translateY(20px)' }}>
+            <div style={{ transform: 'translateY(15px)' }}>
               {flying ? "Flying…" : "Click Bee!"}
             </div>
           </div>
