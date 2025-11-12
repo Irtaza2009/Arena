@@ -96,8 +96,8 @@ function App() {
             style={{
               width: "20px",
               height: "20px",
-              borderRadius: "100%",
-              background: "#666",
+              borderRadius: "50%",
+              background: "#e4d1b3",
               color: "white",
               border: "none",
               cursor: "pointer",
@@ -106,6 +106,7 @@ function App() {
               justifyContent: "center",
               fontSize: "12px",
               fontWeight: "bold",
+              flexShrink: 0,
             }}
           >
             ↻

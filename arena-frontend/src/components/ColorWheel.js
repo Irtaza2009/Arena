@@ -238,7 +238,7 @@ export default function ColorWheel({ onAssign, onClose }) {
                   onClick={handleSpinAgain}
                   style={{
                     padding: '8px 16px',
-                    background: '#ff6b6b',
+                    background: '#c89f94',
                     color: 'white',
                     border: 'none',
                     borderRadius: '20px',
@@ -246,13 +246,13 @@ export default function ColorWheel({ onAssign, onClose }) {
                     fontWeight: 'bold',
                   }}
                 >
-                  Choose again.
+                  Choose again
                 </button>
                 <button
                   onClick={handleAcceptColor}
                   style={{
                     padding: '8px 16px',
-                    background: '#51cf66',
+                    background: '#dfe8d5',
                     color: 'white',
                     border: 'none',
                     borderRadius: '20px',
