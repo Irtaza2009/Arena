@@ -7,7 +7,7 @@ import Submitted from "./components/Submitted";
 import { LeaderboardManager } from "./components/Leaderboard";
 import SwordLoader from "./components/SwordLoader";
 import Gallery from "./components/Gallery";
-import ColorWheel from "./components/ColorWheel"; // added
+import ColorWheel from "./components/ColorWheel";
 
 import "./App.css";
 
@@ -16,6 +16,7 @@ function App() {
   const [checking, setChecking] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("home");
+  const [showColorWheel, setShowColorWheel] = useState(false);
 
   useEffect(() => {
     axios
@@ -24,6 +25,8 @@ function App() {
       })
       .then((res) => {
         setUser(res.data);
+        // Don't auto-show color wheel if user already has a color
+        setShowColorWheel(!res.data.color);
       })
       .catch((err) => {
         if (err.response && err.response.status === 401) {
@@ -53,34 +56,72 @@ function App() {
 
   // callback for color assigned by ColorWheel
   const handleColorAssigned = (colorHex) => {
-    // update local user state so UI updates immediately
     setUser((u) => (u ? { ...u, color: colorHex } : u));
+    setShowColorWheel(false);
+  };
+
+  const handleOpenColorWheel = () => {
+    setShowColorWheel(true);
   };
 
   return (
     <div className="App">
-      {/* show the small color badge at top-left when the user has a color */}
+      {/* Color badge with reload button */}
       {user && user.color && (
         <div
-          title={`Your color: ${user.color}`}
           style={{
             position: "fixed",
             top: 8,
             left: 8,
-            width: 22,
-            height: 22,
-            borderRadius: "50%",
-            background: user.color,
-            border: "2px solid #fff",
-            boxShadow: "0 1px 4px rgba(0,0,0,0.3)",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
             zIndex: 9998,
           }}
+        >
+          <div
+            title={`Your color: ${user.color}`}
+            style={{
+              width: 22,
+              height: 22,
+              borderRadius: "50%",
+              background: user.color,
+              border: "2px solid #fff",
+              boxShadow: "0 1px 4px rgba(0,0,0,0.3)",
+            }}
+          />
+          <button
+            onClick={handleOpenColorWheel}
+            title="Change color"
+            style={{
+              width: "20px",
+              height: "20px",
+              borderRadius: "50%",
+              background: "#666",
+              color: "white",
+              border: "none",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "12px",
+              fontWeight: "bold",
+            }}
+          >
+            ↻
+          </button>
+        </div>
+      )}
+
+      {/* Show color wheel when needed */}
+      {user && showColorWheel && (
+        <ColorWheel 
+          onAssign={handleColorAssigned} 
+          onClose={() => setShowColorWheel(false)}
         />
       )}
 
-      {/* show the wheel once when user is present and has no color */}
-      {user && !user.color && <ColorWheel onAssign={handleColorAssigned} />}
-
+      {/* Rest of your existing JSX remains the same */}
       {/* Tabs - only show if signed in */}
       {user && (
         <div
@@ -105,8 +146,7 @@ function App() {
       {/* Tab Content */}
       {activeTab === "gallery" ? (
         <Gallery />
-      ) : //<Submitted lockedType="gallery" />
-      checking ? (
+      ) : checking ? (
         <>
           <SwordLoader />
           <p className="cottage-text">Loading...</p>
@@ -117,8 +157,8 @@ function App() {
         <Login />
       ) : !user.hasSubmitted ? (
         <SubmissionForm user={user} />
-      ) : (
         //<Submitted lockedType="submission" />
+      ) : (
         //<Voting user={user} />
         <Submitted lockedType="voting" />
       )}

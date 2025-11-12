@@ -13,10 +13,12 @@ const COLORS = [
   { name: "Smoky", hex: "#4A4A4A" },    // pastel black (muted/soft black)
 ];
 
-export default function ColorWheel({ onAssign }) {
+export default function ColorWheel({ onAssign, onClose }) {
   const [flying, setFlying] = useState(false);
   const [beePosition, setBeePosition] = useState({ x: 0, y: 0 });
   const [targetColor, setTargetColor] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [showResult, setShowResult] = useState(false);
 
   // Calculate positions for each color segment - with random offset within segment
   const getColorPosition = (index) => {
@@ -42,20 +44,22 @@ export default function ColorWheel({ onAssign }) {
   const flyToColor = async () => {
     if (flying) return;
     setFlying(true);
+    setShowResult(false);
 
     const chosenIndex = Math.floor(Math.random() * COLORS.length);
     const targetPos = getColorPosition(chosenIndex);
-    setTargetColor(COLORS[chosenIndex]);
+    const chosenColor = COLORS[chosenIndex];
+    setTargetColor(chosenColor);
 
     // Reset bee to center (slightly higher position)
-    setBeePosition({ x: 0, y: -20 }); // Moved bee up by 20px
+    setBeePosition({ x: 0, y: -20 });
 
     // Small delay before starting flight
     await new Promise(resolve => setTimeout(resolve, 100));
 
     // Bee-like flight path with wobble
     const steps = 60;
-    const duration = 3000; // 3 seconds
+    const duration = 3000;
     const stepTime = duration / steps;
 
     for (let i = 0; i <= steps; i++) {
@@ -72,7 +76,7 @@ export default function ColorWheel({ onAssign }) {
       
       setBeePosition({
         x: mainX + wobbleX,
-        y: mainY + wobbleY - 20 * (1 - progress) // Start from higher position
+        y: mainY + wobbleY - 20 * (1 - progress)
       });
 
       await new Promise(resolve => setTimeout(resolve, stepTime));
@@ -81,24 +85,35 @@ export default function ColorWheel({ onAssign }) {
     // Final adjustment to exact target position
     setBeePosition(targetPos);
 
-    const color = COLORS[chosenIndex].hex;
-
     // Save color to backend
     try {
       await axios.post(
         "https://backend.arena.hackclub.com/api/color",
-        { color },
+        { color: chosenColor.hex },
         { withCredentials: true }
       );
     } catch (err) {
       console.error("Failed to save color:", err);
     }
 
-    // Small delay before calling onAssign
     setTimeout(() => {
       setFlying(false);
-      if (typeof onAssign === "function") onAssign(color);
+      setSelectedColor(chosenColor);
+      setShowResult(true);
     }, 500);
+  };
+
+  const handleAcceptColor = () => {
+    if (selectedColor && typeof onAssign === "function") {
+      onAssign(selectedColor.hex);
+    }
+  };
+
+  const handleSpinAgain = () => {
+    setShowResult(false);
+    setSelectedColor(null);
+    setTargetColor(null);
+    setBeePosition({ x: 0, y: -20 });
   };
 
   return (
@@ -124,7 +139,7 @@ export default function ColorWheel({ onAssign }) {
         }}
       >
         <div style={{ marginBottom: 12, fontSize: 20, fontWeight: 600 }}>
-          Click the bee to claim your monochrome colour!
+          {showResult ? "Color Selected!" : "Click the bee to claim your monochrome colour!"}
         </div>
         
         {/* Color Wheel */}
@@ -134,7 +149,6 @@ export default function ColorWheel({ onAssign }) {
             height: 320,
             margin: "0 auto",
             borderRadius: "50%",
-            // segments with conic-gradient in ROYGBIV order
             background: `conic-gradient(${COLORS
               .map((c, i) => `${c.hex} ${i * (360 / COLORS.length)}deg ${(
                 (i + 1) *
@@ -147,11 +161,12 @@ export default function ColorWheel({ onAssign }) {
             boxShadow: "0 6px 18px rgba(0,0,0,0.5)",
             position: "relative",
             overflow: "hidden",
+            opacity: showResult ? 0.7 : 1,
           }}
         >
-          {/* Bee - positioned slightly higher */}
+          {/* Bee */}
           <div
-            onClick={flyToColor}
+            onClick={!showResult ? flyToColor : null}
             style={{
               position: "absolute",
               width: "50px",
@@ -159,7 +174,7 @@ export default function ColorWheel({ onAssign }) {
               left: "50%",
               top: "50%",
               transform: `translate(${beePosition.x - 25}px, ${beePosition.y - 25}px)`,
-              cursor: flying ? "default" : "pointer",
+              cursor: flying ? "default" : (showResult ? "default" : "pointer"),
               transition: flying ? "none" : "transform 0.2s ease",
               zIndex: 10,
               display: "flex",
@@ -180,36 +195,75 @@ export default function ColorWheel({ onAssign }) {
             />
           </div>
 
-          {/* Center circle - text positioned slightly lower */}
+          {/* Center circle */}
           <div
             style={{
               width: 80,
               height: 80,
               borderRadius: "50%",
-              background: "#fff",
+              background: showResult && selectedColor ? selectedColor.hex : "#fff",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "#111",
+              color: showResult && selectedColor ? 
+                (selectedColor.name === "Smoky" || selectedColor.name === "Indigo" ? "#fff" : "#111") : "#111",
               fontWeight: 700,
               position: "relative",
               zIndex: 1,
               opacity: flying ? 0.7 : 1,
+              transition: 'all 0.3s ease',
             }}
           >
-            <div style={{ transform: 'translateY(18px)' }}>
-              {flying ? "Flying…" : "Click Bee!"}
+            <div style={{ transform: 'translateY(18px)', fontSize: showResult ? '12px' : '14px' }}>
+              {showResult ? "Selected!" : flying ? "Flying…" : "Click Bee!"}
             </div>
           </div>
         </div>
 
-        {/* Status message */}
+        {/* Status/Result message */}
         <div style={{ marginTop: 12, minHeight: 20 }}>
           {flying && targetColor && (
             <small>The bee is flying to {targetColor.name}!</small>
           )}
-          {!flying && (
+          {!flying && !showResult && (
             <small>Click the bee to choose your color. It will fly to a random color!</small>
+          )}
+          {showResult && selectedColor && (
+            <div>
+              <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '10px 0' }}>
+                You got <span style={{ color: selectedColor.hex }}>{selectedColor.name}</span>!
+              </p>
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '15px' }}>
+                <button
+                  onClick={handleSpinAgain}
+                  style={{
+                    padding: '8px 16px',
+                    background: '#ff6b6b',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '20px',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  Click the bee to choose again.
+                </button>
+                <button
+                  onClick={handleAcceptColor}
+                  style={{
+                    padding: '8px 16px',
+                    background: '#51cf66',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '20px',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  Keep Color!
+                </button>
+              </div>
+            </div>
           )}
         </div>
       </div>
