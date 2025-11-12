@@ -13,54 +13,85 @@ const COLORS = [
 ];
 
 export default function ColorWheel({ onAssign }) {
-  const [spinning, setSpinning] = useState(false);
+  const [flying, setFlying] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [beePosition, setBeePosition] = useState({ x: 0, y: 0 });
+  const [targetColor, setTargetColor] = useState(null);
 
-  const spin = async () => {
-    if (spinning) return;
-    setSpinning(true);
-
+  // Calculate positions for each color segment (around the circle)
+  const getColorPosition = (index) => {
     const segments = COLORS.length;
-    const chosenIndex = Math.floor(Math.random() * segments);
+    const radius = 120; // Distance from center
+    const angle = (index * 360 / segments) - 90; // Start from top (-90deg)
+    const radian = (angle * Math.PI) / 180;
+    
+    return {
+      x: Math.cos(radian) * radius,
+      y: Math.sin(radian) * radius
+    };
+  };
 
-    // compute rotation so the chosen segment ends at the top (pointer at 0deg).
-    const segmentAngle = 360 / segments;
-    const halfSeg = segmentAngle / 2;
-    // random extra spins for effect
-    const extraSpins = 3 + Math.floor(Math.random() * 3); // 3..5 full spins
-    // angle that will place the center of chosen segment at top (0deg)
-    const targetAlign = 360 - (chosenIndex * segmentAngle + halfSeg);
-    const targetRotation = extraSpins * 360 + targetAlign;
+  const flyToColor = async () => {
+    if (flying) return;
+    setFlying(true);
 
-    setSelected(chosenIndex);
+    const chosenIndex = Math.floor(Math.random() * COLORS.length);
+    const targetPos = getColorPosition(chosenIndex);
+    setTargetColor(COLORS[chosenIndex]);
 
-    // animate rotation by applying inline style to wheel element via id
-    const wheel = document.getElementById("arena-color-wheel");
-    if (wheel) {
-      wheel.style.transition = "transform 4s cubic-bezier(0.1,0.9,0.2,1)";
-      wheel.style.transform = `rotate(${targetRotation}deg)`;
+    // Reset bee to center
+    setBeePosition({ x: 0, y: 0 });
+
+    // Small delay before starting flight
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    // Bee-like flight path with wobble
+    const steps = 60;
+    const duration = 3000; // 3 seconds
+    const stepTime = duration / steps;
+
+    for (let i = 0; i <= steps; i++) {
+      const progress = i / steps;
+      
+      // Main movement towards target
+      const mainX = targetPos.x * progress;
+      const mainY = targetPos.y * progress;
+      
+      // Wobble effect (bee-like motion)
+      const wobbleIntensity = 15;
+      const wobbleX = Math.sin(progress * Math.PI * 8) * wobbleIntensity * (1 - progress);
+      const wobbleY = Math.cos(progress * Math.PI * 6) * wobbleIntensity * (1 - progress);
+      
+      setBeePosition({
+        x: mainX + wobbleX,
+        y: mainY + wobbleY
+      });
+
+      await new Promise(resolve => setTimeout(resolve, stepTime));
     }
 
-    // wait for animation to finish
-    const duration = 4200;
-    setTimeout(async () => {
-      const color = COLORS[chosenIndex].hex;
-      setSpinning(false);
+    // Final adjustment to exact target position
+    setBeePosition(targetPos);
 
-      // Save color to backend 
-      try {
-        
-        await axios.post(
-          "https://backend.arena.hackclub.com/api/color",
-          { color },
-          { withCredentials: true }
-        );
-      } catch (err) {
-        console.error("Failed to save color:", err);
-      }
+    const color = COLORS[chosenIndex].hex;
+    setSelected(chosenIndex);
 
+    // Save color to backend
+    try {
+      await axios.post(
+        "https://backend.arena.hackclub.com/api/color",
+        { color },
+        { withCredentials: true }
+      );
+    } catch (err) {
+      console.error("Failed to save color:", err);
+    }
+
+    // Small delay before calling onAssign
+    setTimeout(() => {
+      setFlying(false);
       if (typeof onAssign === "function") onAssign(color);
-    }, duration);
+    }, 500);
   };
 
   return (
@@ -82,21 +113,21 @@ export default function ColorWheel({ onAssign }) {
           maxWidth: "90vw",
           textAlign: "center",
           color: "#fff",
+          position: "relative",
         }}
       >
         <div style={{ marginBottom: 12, fontSize: 20, fontWeight: 600 }}>
-          Spin the colour wheel to claim your monochrome colour
+          Click the bee to claim your monochrome colour!
         </div>
+        
+        {/* Color Wheel */}
         <div
-          id="arena-color-wheel"
-          onClick={spin}
           style={{
             width: 320,
             height: 320,
             margin: "0 auto",
             borderRadius: "50%",
-            cursor: spinning ? "default" : "pointer",
-            // create segments with conic-gradient in ROYGBIV order
+            // segments with conic-gradient in ROYGBIV order
             background: `conic-gradient(${COLORS
               .map((c, i) => `${c.hex} ${i * (360 / COLORS.length)}deg ${(
                 (i + 1) *
@@ -107,9 +138,44 @@ export default function ColorWheel({ onAssign }) {
             alignItems: "center",
             justifyContent: "center",
             boxShadow: "0 6px 18px rgba(0,0,0,0.5)",
-            transition: "transform 4s cubic-bezier(0.1,0.9,0.2,1)",
+            position: "relative",
+            overflow: "hidden",
           }}
         >
+          {/* Bee */}
+          <div
+            onClick={flyToColor}
+            style={{
+              position: "absolute",
+              width: "50px",
+              height: "50px",
+              left: "50%",
+              top: "50%",
+              transform: `translate(${beePosition.x - 25}px, ${beePosition.y - 25}px)`,
+              cursor: flying ? "default" : "pointer",
+              transition: flying ? "none" : "transform 0.2s ease",
+              zIndex: 10,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "transparent",
+            }}
+          >
+            {
+            <img 
+              src="/bumble_bee.png" 
+              alt="Bee" 
+              style={{ 
+                width: '50px', 
+                height: '50px',
+                filter: flying ? 'drop-shadow(0 0 4px rgba(255,255,0,0.6))' : 'none',
+                transition: 'filter 0.3s ease'
+              }} 
+            />
+            }
+          </div>
+
+          {/* Center circle (background for bee) */}
           <div
             style={{
               width: 80,
@@ -121,36 +187,47 @@ export default function ColorWheel({ onAssign }) {
               justifyContent: "center",
               color: "#111",
               fontWeight: 700,
+              position: "relative",
+              zIndex: 1,
+              opacity: flying ? 0.7 : 1,
             }}
           >
-            {spinning ? "Spinning…" : "SPIN"}
+            {flying ? "Flying…" : "Click Bee!"}
           </div>
         </div>
-        <div style={{ marginTop: 12 }}>
-          <small>Click the wheel to spin. Your colour will appear on the UI.</small>
+
+        {/* Status message */}
+        <div style={{ marginTop: 12, minHeight: 20 }}>
+          {flying && targetColor && (
+            <small>The bee is flying to {targetColor.name}!</small>
+          )}
+          {!flying && (
+            <small>Click the bee to choose your color. It will fly to a random color!</small>
+          )}
         </div>
-        <div
-          style={{
-            position: "absolute",
-            top: 18,
-            left: 18,
-            color: "#fff",
-            fontSize: 12,
-            opacity: 0.9,
-          }}
-        >
-          {/* pointer marker */}
-          <div
-            style={{
-              width: 0,
-              height: 0,
-              borderLeft: "8px solid transparent",
-              borderRight: "8px solid transparent",
-              borderBottom: "14px solid #fff",
-              marginBottom: 6,
-            }}
-          />
-          <div style={{ fontSize: 11 }}>pointer</div>
+
+        {/* Color markers around the wheel */}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+          {COLORS.map((color, index) => {
+            const pos = getColorPosition(index);
+            return (
+              <div
+                key={index}
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  transform: `translate(${pos.x - 8}px, ${pos.y - 8}px)`,
+                  width: "16px",
+                  height: "16px",
+                  borderRadius: "50%",
+                  background: color.hex,
+                  border: "2px solid #fff",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.3)",
+                }}
+              />
+            );
+          })}
         </div>
       </div>
     </div>
