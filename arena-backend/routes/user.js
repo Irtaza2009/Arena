@@ -235,7 +235,7 @@ router.get("/voting-pair", auth, async (req, res) => {
   res.json({ pair: randomPair, token });
 });
 
-router.post("/color", async (req, res) => {
+router.post("/color", auth, async (req, res) => {
   const user = req.user;
   if (!user) {
     return res.status(401).json({ error: "Not authenticated" });

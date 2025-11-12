@@ -57,7 +57,6 @@ export default function ColorWheel({ onAssign }) {
         );
       } catch (err) {
         console.error("Failed to save color:", err);
-        // continue to notify parent even on backend failure
       }
 
       if (typeof onAssign === "function") onAssign(color);
