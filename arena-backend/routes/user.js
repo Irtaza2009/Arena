@@ -12,6 +12,7 @@ router.get("/me", auth, async (req, res) => {
     avatar: user.avatar,
     hasSubmitted: user.hasSubmitted,
     slackId: user.slackId,
+    color: user.color,
   });
 });
 
