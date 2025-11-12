@@ -187,7 +187,7 @@ export default function ColorWheel({ onAssign }) {
               position: "relative",
               zIndex: 1,
               opacity: flying ? 0.7 : 1,
-              transform: 'translateY(8px)', // Moved text down by 8px
+              transform: 'translateY(28px)', // Moved text down by 28px
             }}
           >
             {flying ? "Flying…" : "Click Bee!"}
