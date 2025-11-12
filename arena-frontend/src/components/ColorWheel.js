@@ -18,10 +18,10 @@ export default function ColorWheel({ onAssign }) {
   const [beePosition, setBeePosition] = useState({ x: 0, y: 0 });
   const [targetColor, setTargetColor] = useState(null);
 
-  // Calculate positions for each color segment (around the circle)
+  // Calculate positions for each color segment - moved more towards middle
   const getColorPosition = (index) => {
     const segments = COLORS.length;
-    const radius = 120; // Distance from center
+    const radius = 80; // Reduced from 120 to move landing points more towards middle
     const angle = (index * 360 / segments) - 90; // Start from top (-90deg)
     const radian = (angle * Math.PI) / 180;
     
@@ -39,8 +39,8 @@ export default function ColorWheel({ onAssign }) {
     const targetPos = getColorPosition(chosenIndex);
     setTargetColor(COLORS[chosenIndex]);
 
-    // Reset bee to center
-    setBeePosition({ x: 0, y: 0 });
+    // Reset bee to center (slightly higher position)
+    setBeePosition({ x: 0, y: -10 }); // Moved bee up by 10px
 
     // Small delay before starting flight
     await new Promise(resolve => setTimeout(resolve, 100));
@@ -64,7 +64,7 @@ export default function ColorWheel({ onAssign }) {
       
       setBeePosition({
         x: mainX + wobbleX,
-        y: mainY + wobbleY
+        y: mainY + wobbleY - 10 * (1 - progress) // Start from higher position
       });
 
       await new Promise(resolve => setTimeout(resolve, stepTime));
@@ -141,7 +141,7 @@ export default function ColorWheel({ onAssign }) {
             overflow: "hidden",
           }}
         >
-          {/* Bee */}
+          {/* Bee - positioned slightly higher */}
           <div
             onClick={flyToColor}
             style={{
@@ -172,7 +172,7 @@ export default function ColorWheel({ onAssign }) {
             />
           </div>
 
-          {/* Center circle (background for bee) */}
+          {/* Center circle - text positioned slightly lower */}
           <div
             style={{
               width: 80,
@@ -187,6 +187,7 @@ export default function ColorWheel({ onAssign }) {
               position: "relative",
               zIndex: 1,
               opacity: flying ? 0.7 : 1,
+              transform: 'translateY(8px)', // Moved text down by 8px
             }}
           >
             {flying ? "Flying…" : "Click Bee!"}
