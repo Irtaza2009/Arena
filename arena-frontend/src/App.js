@@ -98,7 +98,7 @@ function App() {
               height: "20px",
               borderRadius: "50%",
               background: "#e4d1b3",
-              color: "white",
+              color: "#3e342c",
               border: "none",
               cursor: "pointer",
               display: "flex",
@@ -107,6 +107,7 @@ function App() {
               fontSize: "12px",
               fontWeight: "bold",
               flexShrink: 0,
+              padding: 0,
             }}
           >
             ↻

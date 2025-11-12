@@ -253,7 +253,7 @@ export default function ColorWheel({ onAssign, onClose }) {
                   style={{
                     padding: '8px 16px',
                     background: '#dfe8d5',
-                    color: 'white',
+                    color: '#3e342c',
                     border: 'none',
                     borderRadius: '20px',
                     cursor: 'pointer',
