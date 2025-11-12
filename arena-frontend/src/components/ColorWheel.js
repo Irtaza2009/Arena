@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import beeImage from "../bumble_bee.png"
 
 const COLORS = [
   { name: "Red", hex: "#FFB3B3" },      // pastel red
@@ -14,7 +15,6 @@ const COLORS = [
 
 export default function ColorWheel({ onAssign }) {
   const [flying, setFlying] = useState(false);
-  // const [selected, setSelected] = useState(null);
   const [beePosition, setBeePosition] = useState({ x: 0, y: 0 });
   const [targetColor, setTargetColor] = useState(null);
 
@@ -74,7 +74,6 @@ export default function ColorWheel({ onAssign }) {
     setBeePosition(targetPos);
 
     const color = COLORS[chosenIndex].hex;
-    // setSelected(chosenIndex);
 
     // Save color to backend
     try {
@@ -161,9 +160,8 @@ export default function ColorWheel({ onAssign }) {
               background: "transparent",
             }}
           >
-            {
             <img 
-              src="/bumble_bee.png" 
+              src={beeImage} 
               alt="Bee" 
               style={{ 
                 width: '50px', 
@@ -172,7 +170,6 @@ export default function ColorWheel({ onAssign }) {
                 transition: 'filter 0.3s ease'
               }} 
             />
-            }
           </div>
 
           {/* Center circle (background for bee) */}
@@ -204,30 +201,6 @@ export default function ColorWheel({ onAssign }) {
           {!flying && (
             <small>Click the bee to choose your color. It will fly to a random color!</small>
           )}
-        </div>
-
-        {/* Color markers around the wheel */}
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-          {COLORS.map((color, index) => {
-            const pos = getColorPosition(index);
-            return (
-              <div
-                key={index}
-                style={{
-                  position: "absolute",
-                  left: "50%",
-                  top: "50%",
-                  transform: `translate(${pos.x - 8}px, ${pos.y - 8}px)`,
-                  width: "16px",
-                  height: "16px",
-                  borderRadius: "50%",
-                  background: color.hex,
-                  border: "2px solid #fff",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.3)",
-                }}
-              />
-            );
-          })}
         </div>
       </div>
     </div>
