@@ -96,7 +96,7 @@ function App() {
             style={{
               width: "20px",
               height: "20px",
-              borderRadius: "50%",
+              borderRadius: "100%",
               background: "#666",
               color: "white",
               border: "none",
@@ -121,7 +121,6 @@ function App() {
         />
       )}
 
-      {/* Rest of your existing JSX remains the same */}
       {/* Tabs - only show if signed in */}
       {user && (
         <div

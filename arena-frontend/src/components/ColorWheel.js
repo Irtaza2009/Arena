@@ -30,7 +30,7 @@ export default function ColorWheel({ onAssign, onClose }) {
     const segmentStartAngle = (index * segmentSize) - 90; // Start from top
     
     // Add random offset within the segment (avoid edges)
-    const randomOffset = (Math.random() * segmentSize * 0.6) - (segmentSize * 0.3); // ±13.5 degrees from center
+    const randomOffset = Math.random() * segmentSize * 0.6; // 0 to 27 degrees from start
     const angle = segmentStartAngle + randomOffset;
     
     const radian = (angle * Math.PI) / 180;
@@ -246,7 +246,7 @@ export default function ColorWheel({ onAssign, onClose }) {
                     fontWeight: 'bold',
                   }}
                 >
-                  Click the bee to choose again.
+                  Choose again.
                 </button>
                 <button
                   onClick={handleAcceptColor}
