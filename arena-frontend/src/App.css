@@ -120,8 +120,8 @@ h4 {
 }
 
 .footer {
-  margin-top: 20px;
-  padding: 20px 0 0 0;
+  margin-top: 2px;
+  padding: 2px 0 0 0;
   text-align: center;
   font-size: 1rem;
   font-weight: bold;
@@ -131,15 +131,36 @@ h4 {
   gap: 0.5rem;
   align-items: center;
   border: none;
+  justify-content: center;
 }
 
 .footer a {
-  color: #3b2e24;
+  color: #007acc;
   text-decoration: none;
+  position: relative;
+  padding: 2px 0;
+  transition: color 0.3s ease;
+}
+
+/* Animated underline effect */
+.footer a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: #3e342c;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
 }
 
 .footer a:hover {
-  text-decoration: underline;
+  color: #3e342c;
+}
+
+.footer a:hover::after {
+  width: 100%;
 }
 
 .footer-signout {
