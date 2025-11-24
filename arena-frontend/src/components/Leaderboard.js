@@ -400,23 +400,33 @@ export const LeaderboardManager = () => {
   return (
     <>
       <footer className="footer">
-        Made with{" "}
-        <span
-          className="heart"
-          onClick={handleHeartClick}
-          role="button"
-          tabIndex={0}
-        >
-          ❤️
-        </span>{" "}
-        by Irtaza —{" "}
-        <a
-          href="https://github.com/Irtaza2009"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          GitHub
-        </a>
+        <b>
+            Made with{" "}
+          <span
+            className="heart"
+            onClick={handleHeartClick}
+            role="button"
+            tabIndex={0}
+          >
+            ❤️
+          </span>{" "}
+          by{" "} 
+          <a
+            href="https://hackclub.slack.com/team/U079EQY9X1D"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Irtaza
+          </a>
+          {" "} —{" "}
+          <a
+            href="https://github.com/Irtaza2009"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+        </b>
       </footer>
       {showAdminGate && <AdminGate onSuccess={handleAdminSuccess} />}
       {showLeaderboard && (
