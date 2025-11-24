@@ -158,10 +158,10 @@ export default function SubmissionForm({ user }) {
   //const selectedTotalTime = secondsToHuman(selectedTotalSeconds);
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "500px", margin: "0 auto" }}>
+    <div style={{ padding: "1rem", maxWidth: "500px", margin: "0 auto" }}>
       <h2>Submit Your Art Piece</h2>
 
-      <div style={{ marginBottom: "1rem" }}>
+      <div style={{ marginBottom: "0.8rem" }}>
         <label
           htmlFor="siteUrl"
           style={{ display: "block", fontWeight: "bold" }}
@@ -206,7 +206,7 @@ export default function SubmissionForm({ user }) {
       </div>
       */}
 
-      <div style={{ marginBottom: "1rem" }}>
+      <div style={{ marginBottom: "0.8rem" }}>
         <label
           htmlFor="imageUrl"
           style={{ display: "block", fontWeight: "bold" }}
@@ -229,7 +229,7 @@ export default function SubmissionForm({ user }) {
       </div>
 
       {imagePreview && (
-        <div style={{ marginBottom: "1rem" }}>
+        <div style={{ marginBottom: "0.8rem" }}>
           <h4>Image Preview</h4>
           <img
             src={imagePreview}
@@ -244,7 +244,7 @@ export default function SubmissionForm({ user }) {
         </div>
       )}
 
-      <div style={{ marginBottom: "1rem" }}>
+      <div style={{ marginBottom: "0.8rem" }}>
         <label
           htmlFor="description"
           style={{ display: "block", fontWeight: "bold" }}
@@ -280,7 +280,7 @@ export default function SubmissionForm({ user }) {
         </div>
       </div>
 
-      <div style={{ marginBottom: "1rem" }}>
+      <div style={{ marginBottom: "0.8rem" }}>
         <label
           htmlFor="projectName"
           style={{ display: "block", fontWeight: "bold" }}
