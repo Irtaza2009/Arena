@@ -170,7 +170,7 @@ export default function SubmissionForm({ user }) {
         </label>
         <input
           id="siteUrl"
-          placeholder="(starting with https:// or http://)"
+          placeholder="(use a cdn! URL should start with https:// or http://)"
           value={siteUrl}
           onChange={(e) => setSiteUrl(e.target.value)}
           style={{
@@ -215,7 +215,7 @@ export default function SubmissionForm({ user }) {
         </label>
         <input
           id="imageUrl"
-          placeholder="(you can use #cdn)"
+          placeholder="(you can use #cdn, or any other cdn)"
           value={imageUrl}
           onChange={handleImageChange}
           style={{
