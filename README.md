@@ -14,6 +14,36 @@ A project submission and voting platform for events hosted by the Special Activi
 - **Admin Live Leaderboard:** To view real-time results of the voting process.
 - **Admin Panel:** For viewing submissions, users, and analytics.
 
+## Local Setup
+
+### Prerequisites
+- Node.js 14+ and npm
+
+### Backend
+```bash
+cd arena-backend
+npm install
+npm start
+```
+
+Create a `.env` file in `arena-backend/` with:
+```
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+SLACK_CLIENT_ID=your_slack_client_id
+SLACK_CLIENT_SECRET=your_slack_client_secret
+SLACK_REDIRECT_URI=http://localhost:5000/auth/slack/callback
+```
+
+### Frontend
+```bash
+cd arena-frontend
+npm install
+npm start
+```
+
+The frontend will run on `http://localhost:3000` and connect to the backend on `http://localhost:5000`.
+
 ## Credits
 
 [CSS Sword](https://codepen.io/judag/full/VrpywV/)
