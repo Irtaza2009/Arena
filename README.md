@@ -1,6 +1,6 @@
 # Arena
 
-![Arena logo/banner](https://hc-cdn.hel1.your-objectstorage.com/s/v3/5c33419f6692b32263773f195fb459b621d161c1_arena__5_.png)
+<img width="1604" height="632" alt="Arena (5)" src="https://github.com/user-attachments/assets/e89b246b-34c2-4092-811f-2b3022d7212f" />
 
 A project submission and voting platform for events hosted by the Special Activities Division (SAD), Hack Club!
 
